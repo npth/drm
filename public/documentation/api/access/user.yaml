@@ -1,0 +1,229 @@
+openapi: 3.1.0
+info:
+  title: "Правила"
+  description: "Правила"
+  version: 1.0.0
+components:
+  schemas:
+    UserId:
+      type: integer
+      description: "Код правила"
+      example: 123
+    UserName:
+      type: string
+      description: "Наименование"
+      example: "Иван"
+    UserEmail:
+      type: string
+      format: email
+      description: "Электронный адрес"
+      example: "ivan@test.ru"
+    NewPassword:
+      type: string
+      nullable: true
+      description: "Новый пароль"
+      example: "password"
+    UserStatus:
+      type: boolean
+      description: "Статус пользователя, активен"
+      example: true
+    User:
+      type: object
+      description: "Пользователь"
+      properties:
+        id:
+          $ref: "#/components/schemas/UserId"
+        name:
+          $ref: "#/components/schemas/UserName"
+        email:
+          $ref: "#/components/schemas/UserEmail"
+        role:
+          $ref: "./role.yaml#/components/schemas/RoleIdName"
+        status:
+          $ref: "#/components/schemas/UserStatus"
+        actions:
+          $ref: './category.yaml#/components/schemas/Actions'
+
+    UserCreate:
+      type: object
+      properties:
+        role_id:
+          $ref: "./role.yaml#/components/schemas/RoleId"
+        name:
+          $ref: "#/components/schemas/UserName"
+        email:
+          $ref: "#/components/schemas/UserEmail"
+        password:
+          $ref: "#/components/schemas/NewPassword"
+        status:
+          $ref: "#/components/schemas/UserStatus"
+      required:
+        - role_id
+        - name
+        - email
+        - password
+        - status
+
+    UserUpdate:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UserId"
+        role_id:
+          $ref: "./role.yaml#/components/schemas/RoleId"
+        name:
+          $ref: "#/components/schemas/UserName"
+        email:
+          $ref: "#/components/schemas/UserEmail"
+        new_password:
+          $ref: "#/components/schemas/NewPassword"
+        status:
+          $ref: "#/components/schemas/UserStatus"
+      required:
+        - id
+        - role_id
+        - name
+        - email
+        - status
+
+    UserDelete:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UserId'
+      required:
+        - id
+
+    SessionDelete:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/SessionId'
+      required:
+        - id
+
+    SessionId:
+      type: integer
+      description: "Код сессии"
+      example: 111
+    Device:
+      type: object
+      description: "Устройство"
+      properties:
+        platform:
+          type: string
+          description: "Платформа"
+          example: "desktop"
+        os:
+          type: string
+          description: "Ось"
+          example: "Windows, 10"
+        browser:
+          type: string
+          description: "Версия браузера"
+          example: "Firefox, 142"
+    Ip:
+      type: string
+      format: ip
+      description: "IP адрес"
+      example: "192.168.12.12"
+    StartedAt:
+      type: string
+      format: datetime
+      description: "Дата/время начала сессии"
+      example: "2025-09-05 08:45:36"
+    LastActivityAt:
+      type: string
+      format: datetime
+      description: "Дата/время последней активности"
+      example: "2025-09-05 08:45:36"
+
+    Session:
+      type: object
+      description: "Сессия, 
+      starter - это пользователь который первоначально вошел в систему и затем авторизовался под другим пользователем"
+      properties:
+        id:
+          $ref: "#/components/schemas/SessionId"
+        user:
+          $ref: "#/components/schemas/User"
+        device:
+          $ref: "#/components/schemas/Device"
+        ip:
+          $ref: "#/components/schemas/Ip"
+        started_at:
+          $ref: "#/components/schemas/StartedAt"
+        last_activity_at:
+          $ref: "#/components/schemas/LastActivityAt"
+        starter:
+          $ref: "#/components/schemas/User"
+
+  requestBodies:
+    UserCreateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserCreate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/UserCreate'
+    UserUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/UserUpdate'
+    UserDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/UserDelete'
+    SessionDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SessionDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/SessionDelete'
+
+  responses:
+    UserResponse:
+      description: "Клиент"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+    UsersListResponse:
+      description: "Список клиентов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    SessionResponse:
+      description: "Сессия"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Session'
+    SessionsListResponse:
+      description: "Список сессий"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Session'

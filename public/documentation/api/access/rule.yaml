@@ -1,0 +1,182 @@
+openapi: 3.1.0
+info:
+  title: "Правила"
+  description: "Правила"
+  version: 1.0.0
+components:
+  schemas:
+    RuleId:
+      type: integer
+      description: "Код правила"
+      example: 123
+    RuleName:
+      type: string
+      description: "Наименование"
+      example: "Старший менеджер может управлять учетными записями менеджеров"
+    Operator:
+      type: string
+      description: "Оператор сравнения"
+      example: ">="
+    Value:
+      oneOf:
+        - type: integer
+          example: 12
+        - type: string
+          example: "часть текста"
+        - type: array
+          items:
+            type: string
+          example:
+            [ 1, 2 ]
+      description: "Значение, тип значения зависит от типа атрибута и оператора, 
+      для строкового это строка, для числа это число или массив чисел и так далее"
+
+    AttributeOrValue:
+      oneOf:
+        - $ref: './attribute.yaml#/components/schemas/CategoryAttribute'
+        - $ref: '#/components/schemas/Value'
+    ConditionId:
+      type: integer
+      description: "Код условия"
+      example: 15
+    Condition:
+      type: object
+      description: "Условие"
+      properties:
+        category:
+          $ref: './category.yaml#/components/schemas/Category'
+        attribute:
+          $ref: './attribute.yaml#/components/schemas/Attribute'
+        operator:
+          $ref: '#/components/schemas/Operator'
+        value:
+          $ref: '#/components/schemas/Value'
+    ConditionEdit:
+      type: object
+      description: "Условие"
+      properties:
+        field:
+          $ref: '#/components/schemas/AttributeOrValue'
+        operator:
+          $ref: '#/components/schemas/Operator'
+        value:
+          $ref: '#/components/schemas/AttributeOrValue'
+
+
+
+    Conditions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Condition'
+    ConditionsEdit:
+      type: array
+      items:
+        $ref: '#/components/schemas/ConditionEdit'
+    PermissionsEdit:
+      type: array
+      items:
+        type: string
+        description: "Метка действия"
+        example: "edit"
+    Rule:
+      type: object
+      description: "Правило"
+      properties:
+        id:
+          $ref: "#/components/schemas/RuleId"
+        name:
+          $ref: "#/components/schemas/RuleName"
+        resource:
+          $ref: "./category.yaml#/components/schemas/Resource"
+        conditions:
+          $ref: "#/components/schemas/Conditions"
+        actions:
+          $ref: "#/components/schemas/PermissionsEdit"
+
+    RuleCreate:
+      type: object
+      properties:
+        role_id:
+          $ref: "./role.yaml#/components/schemas/RoleId"
+        name:
+          $ref: "#/components/schemas/RuleName"
+        resource_code:
+          $ref: "./category.yaml#/components/schemas/ResourceCode"
+        conditions:
+          $ref: "#/components/schemas/ConditionsEdit"
+        actions:
+          $ref: "#/components/schemas/PermissionsEdit"
+      required:
+        - role_id
+        - name
+
+    RuleUpdate:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/RuleId"
+        name:
+          $ref: "#/components/schemas/RuleName"
+        resource_code:
+          $ref: "./category.yaml#/components/schemas/ResourceCode"
+        conditions:
+          $ref: "#/components/schemas/ConditionsEdit"
+        actions:
+          $ref: "#/components/schemas/PermissionsEdit"
+      required:
+        - id
+        - role_id
+        - name
+
+    RuleDelete:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/RuleId'
+      required:
+        - id
+
+  requestBodies:
+    RuleCreateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RuleCreate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/RuleCreate'
+    RuleUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RuleUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/RuleUpdate'
+    RuleDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RuleDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/RuleDelete'
+
+  responses:
+    RuleResponse:
+      description: "Клиент"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Rule'
+    RulesListResponse:
+      description: "Список клиентов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rule'

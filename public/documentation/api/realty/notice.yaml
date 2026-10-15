@@ -1,0 +1,730 @@
+openapi: 3.1.0
+info:
+  title: "Объявления"
+  description: "Схемы для работы с объявлениями недвижимости"
+  version: 1.0.0
+components:
+  schemas:
+    NoticeId:
+      type: integer
+      description: "ID объявления"
+      example: 1
+    OperationId:
+      type: integer
+      description: "ID операции"
+      example: 1
+    TypeId:
+      type: integer
+      nullable: true
+      description: "ID типа недвижимости"
+      example: 1
+    AdditionalTypeIds:
+      type: array
+      items:
+        type: integer
+      description: "Альтернативные типы недвижимости"
+      example: [2, 3]
+    ForCommercial:
+      type: boolean
+      nullable: true
+      description: "Под коммерцию"
+      example: false
+    UseLandId:
+      type: integer
+      nullable: true
+      description: "Вид использования з/у"
+      example: 1
+    ClientId:
+      type: integer
+      nullable: true
+      description: "ID клиента"
+      example: 10
+    IsAgent:
+      type: boolean
+      description: "Агент"
+      example: true
+    StatusId:
+      type: integer
+      description: "Статус"
+      example: 1
+    PostedAt:
+      type: string
+      format: date-time
+      nullable: true
+      description: "Дата создания объявления"
+    ChangedAt:
+      type: string
+      format: date-time
+      nullable: true
+      description: "Дата изменения объявления"
+    ModeratedAt:
+      type: string
+      format: date-time
+      nullable: true
+      description: "Дата модерации"
+    Price:
+      type: integer
+      nullable: true
+      description: "Цена"
+      example: 5000000
+    PriceMin:
+      type: integer
+      nullable: true
+      description: "Цена минимальная"
+      example: 4500000
+    NoticeName:
+      type: string
+      description: "Заголовок объявления"
+      example: "Просторная квартира в центре"
+    Content:
+      type: string
+      nullable: true
+      description: "Содержание"
+    Note:
+      type: string
+      nullable: true
+      description: "Примечание"
+    Description:
+      type: string
+      description: "Условия операции"
+      example: "Прямая продажа от собственника"
+    AreaTotal:
+      type: number
+      format: float
+      nullable: true
+      description: "Общая площадь"
+      example: 85.5
+    AreaMin:
+      type: number
+      format: float
+      nullable: true
+      description: "Общая площадь минимальная"
+    AreaLiving:
+      type: number
+      format: float
+      nullable: true
+      description: "Жилая площадь"
+    AreaKitchen:
+      type: number
+      format: float
+      nullable: true
+      description: "Площадь кухни"
+    Land:
+      type: number
+      format: float
+      nullable: true
+      description: "Земельный участок"
+    LandMin:
+      type: number
+      format: float
+      nullable: true
+      description: "Земельный участок, мин."
+    Facade:
+      type: number
+      format: float
+      nullable: true
+      description: "Фасад"
+    FloorTotal:
+      type: integer
+      nullable: true
+      description: "Этажность"
+    Floor:
+      type: integer
+      nullable: true
+      description: "Этаж"
+    Room:
+      type: integer
+      nullable: true
+      description: "Количество комнат"
+    RoomIsolated:
+      type: integer
+      nullable: true
+      description: "Изолированных комнат"
+    RoomTotal:
+      type: integer
+      nullable: true
+      description: "Всего комнат в квартире"
+    PlanId:
+      type: integer
+      nullable: true
+      description: "Планировка"
+    Latitude:
+      type: number
+      format: double
+      nullable: true
+      description: "Широта"
+    Longitude:
+      type: number
+      format: double
+      nullable: true
+      description: "Долгота"
+    RegionId:
+      type: integer
+      nullable: true
+      description: "Код региона"
+    DistrictId:
+      type: integer
+      nullable: true
+      description: "Код района"
+    CountyId:
+      type: integer
+      nullable: true
+      description: "Код округа"
+    PointId:
+      type: integer
+      nullable: true
+      description: "Код населенного пункта"
+    ComplexId:
+      type: integer
+      nullable: true
+      description: "Код ЖК"
+    GardenId:
+      type: integer
+      nullable: true
+      description: "Садовое товарищество"
+    MkrId:
+      type: integer
+      nullable: true
+      description: "Код микрорайона"
+    StreetId:
+      type: integer
+      nullable: true
+      description: "Код улицы"
+    Address:
+      type: string
+      nullable: true
+      description: "Адрес"
+    House:
+      type: string
+      nullable: true
+      description: "Номер дома"
+    Building:
+      type: string
+      nullable: true
+      description: "Корпус"
+    Liter:
+      type: string
+      nullable: true
+      description: "Литер"
+    Landmark:
+      type: string
+      nullable: true
+      description: "Ориентир"
+    MaterialId:
+      type: integer
+      nullable: true
+      description: "Код материала"
+    ConditionId:
+      type: integer
+      nullable: true
+      description: "Состояние ремонта"
+    DeveloperId:
+      type: integer
+      nullable: true
+      description: "Строительная компания"
+    Year:
+      type: integer
+      nullable: true
+      description: "Год постройки"
+    Quarter:
+      type: integer
+      nullable: true
+      description: "Квартал года постройки"
+    HousePart:
+      type: integer
+      nullable: true
+      description: "Доля владения"
+    HouseReady:
+      type: integer
+      nullable: true
+      description: "Готовность дома"
+    Bathroom:
+      type: integer
+      nullable: true
+      description: "Ванных/душевых отдельных"
+    Toilet:
+      type: integer
+      nullable: true
+      description: "Туалетов отдельных"
+    Lavatory:
+      type: integer
+      nullable: true
+      description: "Санузлов совмещенных"
+    Balcony:
+      type: integer
+      nullable: true
+      description: "Балконов"
+    Loggia:
+      type: integer
+      nullable: true
+      description: "Лоджий"
+    GlassBalconyId:
+      type: integer
+      nullable: true
+      description: "Остекление балкона"
+    GlassLoggiaId:
+      type: integer
+      nullable: true
+      description: "Остекление лоджии"
+    GasId:
+      type: integer
+      nullable: true
+      description: "Газ"
+    HeatingId:
+      type: integer
+      nullable: true
+      description: "Отопление"
+    SewerId:
+      type: integer
+      nullable: true
+      description: "Канализация"
+    WaterId:
+      type: integer
+      nullable: true
+      description: "Водопровод"
+    ElectricityId:
+      type: integer
+      nullable: true
+      description: "Электричество"
+    Parking:
+      type: integer
+      nullable: true
+      description: "Парковочных мест своих"
+    Security:
+      type: integer
+      nullable: true
+      description: "Охрана"
+    Railway:
+      type: integer
+      nullable: true
+      description: "Ж/Д пути"
+    Refrigerator:
+      type: boolean
+      nullable: true
+      description: "Холодильник"
+    Television:
+      type: boolean
+      nullable: true
+      description: "Телевизор"
+    Dishwasher:
+      type: boolean
+      nullable: true
+      description: "Посудомоечная машина"
+    Conditioner:
+      type: boolean
+      nullable: true
+      description: "Кондиционер/Сплит"
+    Washer:
+      type: boolean
+      nullable: true
+      description: "Стиральная машина автомат"
+    FurnitureId:
+      type: integer
+      nullable: true
+      description: "Мебель"
+    WithOwners:
+      type: boolean
+      nullable: true
+      description: "С хозяевами"
+    WithShared:
+      type: boolean
+      nullable: true
+      description: "С подселением"
+    RequirementId:
+      type: integer
+      nullable: true
+      description: "Требования к арендаторам"
+
+    Notice:
+      type: object
+      description: "Объявление"
+      properties:
+        id:
+          $ref: "#/components/schemas/NoticeId"
+        operation_id:
+          $ref: "#/components/schemas/OperationId"
+        type_id:
+          $ref: "#/components/schemas/TypeId"
+        additional_type_ids:
+          $ref: "#/components/schemas/AdditionalTypeIds"
+        for_commercial:
+          $ref: "#/components/schemas/ForCommercial"
+        use_land_id:
+          $ref: "#/components/schemas/UseLandId"
+        client_id:
+          $ref: "#/components/schemas/ClientId"
+        is_agent:
+          $ref: "#/components/schemas/IsAgent"
+        status_id:
+          $ref: "#/components/schemas/StatusId"
+        posted_at:
+          $ref: "#/components/schemas/PostedAt"
+        changed_at:
+          $ref: "#/components/schemas/ChangedAt"
+        moderated_at:
+          $ref: "#/components/schemas/ModeratedAt"
+        price:
+          $ref: "#/components/schemas/Price"
+        price_min:
+          $ref: "#/components/schemas/PriceMin"
+        name:
+          $ref: "#/components/schemas/NoticeName"
+        content:
+          $ref: "#/components/schemas/Content"
+        note:
+          $ref: "#/components/schemas/Note"
+        description:
+          $ref: "#/components/schemas/Description"
+        area_total:
+          $ref: "#/components/schemas/AreaTotal"
+        area_min:
+          $ref: "#/components/schemas/AreaMin"
+        area_living:
+          $ref: "#/components/schemas/AreaLiving"
+        area_kitchen:
+          $ref: "#/components/schemas/AreaKitchen"
+        land:
+          $ref: "#/components/schemas/Land"
+        land_min:
+          $ref: "#/components/schemas/LandMin"
+        facade:
+          $ref: "#/components/schemas/Facade"
+        floor_total:
+          $ref: "#/components/schemas/FloorTotal"
+        floor:
+          $ref: "#/components/schemas/Floor"
+        room:
+          $ref: "#/components/schemas/Room"
+        room_isolated:
+          $ref: "#/components/schemas/RoomIsolated"
+        room_total:
+          $ref: "#/components/schemas/RoomTotal"
+        plan_id:
+          $ref: "#/components/schemas/PlanId"
+        latitude:
+          $ref: "#/components/schemas/Latitude"
+        longitude:
+          $ref: "#/components/schemas/Longitude"
+        region_id:
+          $ref: "#/components/schemas/RegionId"
+        district_id:
+          $ref: "#/components/schemas/DistrictId"
+        county_id:
+          $ref: "#/components/schemas/CountyId"
+        point_id:
+          $ref: "#/components/schemas/PointId"
+        complex_id:
+          $ref: "#/components/schemas/ComplexId"
+        garden_id:
+          $ref: "#/components/schemas/GardenId"
+        mkr_id:
+          $ref: "#/components/schemas/MkrId"
+        street_id:
+          $ref: "#/components/schemas/StreetId"
+        address:
+          $ref: "#/components/schemas/Address"
+        house:
+          $ref: "#/components/schemas/House"
+        building:
+          $ref: "#/components/schemas/Building"
+        liter:
+          $ref: "#/components/schemas/Liter"
+        landmark:
+          $ref: "#/components/schemas/Landmark"
+        material_id:
+          $ref: "#/components/schemas/MaterialId"
+        condition_id:
+          $ref: "#/components/schemas/ConditionId"
+        developer_id:
+          $ref: "#/components/schemas/DeveloperId"
+        year:
+          $ref: "#/components/schemas/Year"
+        quarter:
+          $ref: "#/components/schemas/Quarter"
+        house_part:
+          $ref: "#/components/schemas/HousePart"
+        house_ready:
+          $ref: "#/components/schemas/HouseReady"
+        bathroom:
+          $ref: "#/components/schemas/Bathroom"
+        toilet:
+          $ref: "#/components/schemas/Toilet"
+        lavatory:
+          $ref: "#/components/schemas/Lavatory"
+        balcony:
+          $ref: "#/components/schemas/Balcony"
+        loggia:
+          $ref: "#/components/schemas/Loggia"
+        glass_balcony_id:
+          $ref: "#/components/schemas/GlassBalconyId"
+        glass_loggia_id:
+          $ref: "#/components/schemas/GlassLoggiaId"
+        gas_id:
+          $ref: "#/components/schemas/GasId"
+        heating_id:
+          $ref: "#/components/schemas/HeatingId"
+        sewer_id:
+          $ref: "#/components/schemas/SewerId"
+        water_id:
+          $ref: "#/components/schemas/WaterId"
+        electricity_id:
+          $ref: "#/components/schemas/ElectricityId"
+        parking:
+          $ref: "#/components/schemas/Parking"
+        security:
+          $ref: "#/components/schemas/Security"
+        railway:
+          $ref: "#/components/schemas/Railway"
+        refrigerator:
+          $ref: "#/components/schemas/Refrigerator"
+        television:
+          $ref: "#/components/schemas/Television"
+        dishwasher:
+          $ref: "#/components/schemas/Dishwasher"
+        conditioner:
+          $ref: "#/components/schemas/Conditioner"
+        washer:
+          $ref: "#/components/schemas/Washer"
+        furniture_id:
+          $ref: "#/components/schemas/FurnitureId"
+        with_owners:
+          $ref: "#/components/schemas/WithOwners"
+        with_shared:
+          $ref: "#/components/schemas/WithShared"
+        requirement_id:
+          $ref: "#/components/schemas/RequirementId"
+        created_at:
+          $ref: "./../common/components.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "./../common/components.yaml#/components/schemas/UpdatedAt"
+
+    NoticeInsert:
+      type: object
+      description: "Добавление объявления"
+      properties:
+        operation_id:
+          $ref: "#/components/schemas/OperationId"
+        type_id:
+          $ref: "#/components/schemas/TypeId"
+        additional_type_ids:
+          $ref: "#/components/schemas/AdditionalTypeIds"
+        for_commercial:
+          $ref: "#/components/schemas/ForCommercial"
+        use_land_id:
+          $ref: "#/components/schemas/UseLandId"
+        client_id:
+          $ref: "#/components/schemas/ClientId"
+        is_agent:
+          $ref: "#/components/schemas/IsAgent"
+        status_id:
+          $ref: "#/components/schemas/StatusId"
+        posted_at:
+          $ref: "#/components/schemas/PostedAt"
+        changed_at:
+          $ref: "#/components/schemas/ChangedAt"
+        moderated_at:
+          $ref: "#/components/schemas/ModeratedAt"
+        price:
+          $ref: "#/components/schemas/Price"
+        price_min:
+          $ref: "#/components/schemas/PriceMin"
+        name:
+          $ref: "#/components/schemas/NoticeName"
+        content:
+          $ref: "#/components/schemas/Content"
+        note:
+          $ref: "#/components/schemas/Note"
+        description:
+          $ref: "#/components/schemas/Description"
+        area_total:
+          $ref: "#/components/schemas/AreaTotal"
+        area_min:
+          $ref: "#/components/schemas/AreaMin"
+        area_living:
+          $ref: "#/components/schemas/AreaLiving"
+        area_kitchen:
+          $ref: "#/components/schemas/AreaKitchen"
+        land:
+          $ref: "#/components/schemas/Land"
+        land_min:
+          $ref: "#/components/schemas/LandMin"
+        facade:
+          $ref: "#/components/schemas/Facade"
+        floor_total:
+          $ref: "#/components/schemas/FloorTotal"
+        floor:
+          $ref: "#/components/schemas/Floor"
+        room:
+          $ref: "#/components/schemas/Room"
+        room_isolated:
+          $ref: "#/components/schemas/RoomIsolated"
+        room_total:
+          $ref: "#/components/schemas/RoomTotal"
+        plan_id:
+          $ref: "#/components/schemas/PlanId"
+        latitude:
+          $ref: "#/components/schemas/Latitude"
+        longitude:
+          $ref: "#/components/schemas/Longitude"
+        region_id:
+          $ref: "#/components/schemas/RegionId"
+        district_id:
+          $ref: "#/components/schemas/DistrictId"
+        county_id:
+          $ref: "#/components/schemas/CountyId"
+        point_id:
+          $ref: "#/components/schemas/PointId"
+        complex_id:
+          $ref: "#/components/schemas/ComplexId"
+        garden_id:
+          $ref: "#/components/schemas/GardenId"
+        mkr_id:
+          $ref: "#/components/schemas/MkrId"
+        street_id:
+          $ref: "#/components/schemas/StreetId"
+        address:
+          $ref: "#/components/schemas/Address"
+        house:
+          $ref: "#/components/schemas/House"
+        building:
+          $ref: "#/components/schemas/Building"
+        liter:
+          $ref: "#/components/schemas/Liter"
+        landmark:
+          $ref: "#/components/schemas/Landmark"
+        material_id:
+          $ref: "#/components/schemas/MaterialId"
+        condition_id:
+          $ref: "#/components/schemas/ConditionId"
+        developer_id:
+          $ref: "#/components/schemas/DeveloperId"
+        year:
+          $ref: "#/components/schemas/Year"
+        quarter:
+          $ref: "#/components/schemas/Quarter"
+        house_part:
+          $ref: "#/components/schemas/HousePart"
+        house_ready:
+          $ref: "#/components/schemas/HouseReady"
+        bathroom:
+          $ref: "#/components/schemas/Bathroom"
+        toilet:
+          $ref: "#/components/schemas/Toilet"
+        lavatory:
+          $ref: "#/components/schemas/Lavatory"
+        balcony:
+          $ref: "#/components/schemas/Balcony"
+        loggia:
+          $ref: "#/components/schemas/Loggia"
+        glass_balcony_id:
+          $ref: "#/components/schemas/GlassBalconyId"
+        glass_loggia_id:
+          $ref: "#/components/schemas/GlassLoggiaId"
+        gas_id:
+          $ref: "#/components/schemas/GasId"
+        heating_id:
+          $ref: "#/components/schemas/HeatingId"
+        sewer_id:
+          $ref: "#/components/schemas/SewerId"
+        water_id:
+          $ref: "#/components/schemas/WaterId"
+        electricity_id:
+          $ref: "#/components/schemas/ElectricityId"
+        parking:
+          $ref: "#/components/schemas/Parking"
+        security:
+          $ref: "#/components/schemas/Security"
+        railway:
+          $ref: "#/components/schemas/Railway"
+        refrigerator:
+          $ref: "#/components/schemas/Refrigerator"
+        television:
+          $ref: "#/components/schemas/Television"
+        dishwasher:
+          $ref: "#/components/schemas/Dishwasher"
+        conditioner:
+          $ref: "#/components/schemas/Conditioner"
+        washer:
+          $ref: "#/components/schemas/Washer"
+        furniture_id:
+          $ref: "#/components/schemas/FurnitureId"
+        with_owners:
+          $ref: "#/components/schemas/WithOwners"
+        with_shared:
+          $ref: "#/components/schemas/WithShared"
+        requirement_id:
+          $ref: "#/components/schemas/RequirementId"
+      required:
+        - operation_id
+        - is_agent
+        - status_id
+        - name
+        - description
+
+    NoticeUpdate:
+      type: object
+      description: "Обновление объявления"
+      allOf:
+        - $ref: '#/components/schemas/NoticeInsert'
+        - type: object
+          properties:
+            id:
+              $ref: "#/components/schemas/NoticeId"
+          required:
+            - id
+
+    NoticeDelete:
+      type: object
+      description: "Удаление объявления"
+      properties:
+        id:
+          $ref: "#/components/schemas/NoticeId"
+      required:
+        - id
+
+    Notices:
+      type: array
+      items:
+        $ref: '#/components/schemas/Notice'
+
+  requestBodies:
+    NoticeInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NoticeInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/NoticeInsert'
+    NoticeUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NoticeUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/NoticeUpdate'
+    NoticeDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NoticeDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/NoticeDelete'
+  responses:
+    NoticeResponse:
+      description: "Объявление"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Notice'
+    NoticesListResponse:
+      description: "Список объявлений"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Notices'

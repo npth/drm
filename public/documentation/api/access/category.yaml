@@ -1,0 +1,182 @@
+openapi: 3.1.0
+info:
+  title: "Ресурсы"
+  description: "Ресурсы"
+  version: 1.0.0
+components:
+  schemas:
+    ResourceCode:
+      type: string
+      description: "Метка ресурса"
+      example: "client"
+    ResourceName:
+      type: string
+      description: "Наименование ресурса"
+      example: "Клиенты"
+    Resource:
+      type: object
+      description: "Ресурс"
+      properties:
+        code:
+          $ref: "#/components/schemas/ResourceCode"
+        name:
+          $ref: "#/components/schemas/ResourceName"
+    CategoryCode:
+      type: string
+      description: "Метка категории"
+      example: "subject"
+    CategoryCodes:
+      type: array
+      description: "Метки категорий"
+      items:
+        $ref: '#/components/schemas/CategoryCode'
+      example:
+        - 'subject'
+        - 'environment'
+        - 'role'
+    CategoryName:
+      type: string
+      description: "Наименование категории"
+      example: "Субъект"
+
+    Category:
+      type: object
+      description: "Категория"
+      properties:
+        code:
+          $ref: "#/components/schemas/CategoryCode"
+        name:
+          $ref: "#/components/schemas/CategoryName"
+    CategoryWithAttributes:
+      type: object
+      description: "Категория"
+      properties:
+        code:
+          $ref: "#/components/schemas/CategoryCode"
+        name:
+          $ref: "#/components/schemas/CategoryName"
+        attributes:
+          type: array
+          items:
+            $ref: './attribute.yaml#/components/schemas/Attribute'
+    CategoryGroupCode:
+      type: string
+      description: "Метка группы категории"
+      example: "context"
+    CategoryGroupName:
+      type: string
+      description: "Наименование группы категории"
+      example: "Контекст"
+
+    CategoryGroup:
+      type: object
+      description: "Группа категорий"
+      properties:
+        code:
+          $ref: "#/components/schemas/CategoryGroupCode"
+        name:
+          $ref: "#/components/schemas/CategoryGroupName"
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+
+    ActionCode:
+      type: string
+      description: "Метка действия"
+      example: "edit"
+    ActionName:
+      type: string
+      description: "Наименование действия"
+      example: "Редактирование"
+    Action:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ActionCode'
+        name:
+          $ref: '#/components/schemas/ActionName'
+    Actions:
+      type: array
+      description: "Доступные действия"
+      items:
+        $ref: '#/components/schemas/ActionCode'
+
+
+  parameters:
+    ResourceParam:
+      in: query
+      name: category
+      description: "Метка ресурса"
+      schema:
+        $ref: '#/components/schemas/ResourceCode'
+    CategoriesParam:
+      in: query
+      name: categories[]
+      description: "Метки категорий"
+      schema:
+        $ref: '#/components/schemas/CategoryCodes'
+
+  responses:
+    ResourcesListResponse:
+      description: "Ресурсы по группам"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  context:
+                    $ref: '#/components/schemas/CategoryGroup'
+                  resource:
+                    $ref: '#/components/schemas/CategoryGroup'
+                  action:
+                    $ref: '#/components/schemas/CategoryGroup'
+                example:
+                  context:
+                    code: 'context'
+                    name: 'Ресурсы контекста (среда, субъект)'
+                    resources:
+                      - code: 'subject'
+                        name: 'Субъект'
+                      - code: 'environment'
+                        name: 'Среда (окружение)'
+                  resource:
+                    code: 'resource'
+                    name: 'Ресурсы (клиенты, счета и так далее)'
+                    resources:
+                      - code: 'crm-client'
+                        name: 'Клиент'
+                      - code: 'crm-contract'
+                        name: 'Счёт'
+                  action:
+                    code: 'action'
+                    name: 'Действия'
+                    resources:
+                      - code: 'action'
+                        name: 'Действие'
+
+    ActionsListResponse:
+      description: "Список действий"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Action'
+    CategoryWithAttributesResponse:
+      description: "Категории и атрибуты"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryWithAttributes'

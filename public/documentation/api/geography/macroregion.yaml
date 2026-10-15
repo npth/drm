@@ -1,0 +1,132 @@
+openapi: 3.0.1
+info:
+  title: "Макрорегионы"
+  description: "Схемы для работы с макрорегионами"
+  version: 1.0.0
+components:
+  schemas:
+    MacroRegionId:
+      type: integer
+      description: "ID макрорегиона"
+      example: 1
+    MacroRegionName:
+      type: string
+      description: "Наименование макрорегиона"
+      example: "Юг России"
+    MacroRegionCode:
+      type: string
+      description: "Код макрорегиона"
+      example: "south"
+    MacroRegionRegions:
+      type: array
+      items:
+        type: integer
+      description: "Список ID регионов, входящих в макрорегион (из таблицы geography.regions)"
+      example: [1, 2, 5]
+
+    MacroRegion:
+      type: object
+      description: "Макрорегион"
+      properties:
+        id:
+          $ref: "#/components/schemas/MacroRegionId"
+        name:
+          $ref: "#/components/schemas/MacroRegionName"
+        code:
+          $ref: "#/components/schemas/MacroRegionCode"
+        regions:
+          $ref: "#/components/schemas/MacroRegionRegions"
+        created_at:
+          $ref: "./../common/components.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "./../common/components.yaml#/components/schemas/UpdatedAt"
+
+    MacroRegionInsert:
+      type: object
+      description: "Добавление макрорегиона"
+      properties:
+        name:
+          $ref: "#/components/schemas/MacroRegionName"
+        code:
+          $ref: "#/components/schemas/MacroRegionCode"
+        regions:
+          $ref: "#/components/schemas/MacroRegionRegions"
+      required:
+        - name
+        - code
+        - regions
+
+    MacroRegionUpdate:
+      type: object
+      description: "Обновление макрорегиона"
+      properties:
+        id:
+          $ref: "#/components/schemas/MacroRegionId"
+        name:
+          $ref: "#/components/schemas/MacroRegionName"
+        code:
+          $ref: "#/components/schemas/MacroRegionCode"
+        regions:
+          $ref: "#/components/schemas/MacroRegionRegions"
+      required:
+        - id
+        - name
+        - code
+        - regions
+
+    MacroRegionDelete:
+      type: object
+      description: "Удаление макрорегиона"
+      properties:
+        id:
+          $ref: "#/components/schemas/MacroRegionId"
+      required:
+        - id
+
+    MacroRegions:
+      type: array
+      items:
+        $ref: '#/components/schemas/MacroRegion'
+
+  requestBodies:
+    MacroRegionInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MacroRegionInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/MacroRegionInsert'
+    MacroRegionUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MacroRegionUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/MacroRegionUpdate'
+    MacroRegionDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MacroRegionDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/MacroRegionDelete'
+
+  responses:
+    MacroRegionResponse:
+      description: "Макрорегион"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MacroRegion'
+    MacroRegionsListResponse:
+      description: "Список макрорегионов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/MacroRegions'

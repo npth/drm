@@ -1,0 +1,196 @@
+openapi: 3.1.0
+info:
+  title: "Журнал действий"
+  description: "Журнал действий"
+  version: 1.0.0
+components:
+  schemas:
+    EntityCode:
+      type: string
+      description: "Метка сущности"
+      example: "contact"
+    EntityName:
+      type: string
+      description: "Наименование сущности"
+      example: "Контакт"
+    EntityKey:
+      type: string
+      description: "Код сущности"
+      example: "123"
+    Entity:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/EntityCode'
+        name:
+          $ref: '#/components/schemas/EntityName'
+    ActionCode:
+      type: string
+      description: "Метка действия"
+      example: "insert"
+    ActionName:
+      type: string
+      description: "Наименование действия"
+      example: "добавление"
+    Action:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ActionCode'
+        name:
+          $ref: '#/components/schemas/ActionName'
+    LogId:
+      type: integer
+      description: "ID лога"
+      example: 123
+    Actor:
+      type: string
+      description: "Пользователь"
+      example: "Петр"
+    Changes:
+      type: array
+      description: "Изменения"
+      items:
+        type: object
+        properties:
+          field:
+            type: string
+            description: "Поле"
+            example: "phone"
+          value:
+            type: string
+            description: "Значение"
+            example: "918 => 928"
+      example:
+        - field: "phone"
+          value: "918 => 928"
+
+  requestBodies:
+    LogsRequest:
+      description: "Параметры журнала действий"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              filters:
+                type: array
+                description: "Набор фильтров"
+                items:
+                  oneOf:
+                    - type: object
+                      properties:
+                        field:
+                          type: string
+                          description: "ID журнала истории"
+                          example: "id"
+                        operator:
+                          $ref: '../common/filters.yaml#/components/schemas/OperatorFieldNumberValue'
+                        value:
+                          type: integer
+                          description: "Значение"
+                          example: 123
+                    - type: object
+                      properties:
+                        field:
+                          type: string
+                          description: "Метка сущности"
+                          example: "entity_code"
+                        operator:
+                          $ref: '../common/filters.yaml#/components/schemas/OperatorFieldStringValue'
+                        value:
+                          type: string
+                          description: "Значение"
+                          example: "contact"
+                    - type: object
+                      properties:
+                        field:
+                          type: string
+                          description: "Код сущности"
+                          example: "entity_id"
+                        operator:
+                          $ref: '../common/filters.yaml#/components/schemas/OperatorFieldStringValue'
+                        value:
+                          type: string
+                          description: "Значение"
+                          example: "123"
+                    - type: object
+                      properties:
+                        field:
+                          type: string
+                          description: "Метка действия"
+                          example: "action_code"
+                        operator:
+                          $ref: '../common/filters.yaml#/components/schemas/OperatorFieldStringValue'
+                        value:
+                          type: string
+                          description: "Значение"
+                          example: "insert"
+                    - type: object
+                      properties:
+                        field:
+                          type: string
+                          description: "Дата создания"
+                          example: "created_at"
+                        operator:
+                          $ref: '../common/filters.yaml#/components/schemas/OperatorBetween'
+                        from:
+                          $ref: '../common/filters.yaml#/components/schemas/FieldDateTimeValue'
+                        to:
+                          $ref: '../common/filters.yaml#/components/schemas/FieldDateTimeValue'
+              sorters:
+                $ref: '../common/filters.yaml#/components/schemas/Sorters'
+              paging:
+                $ref: '../common/filters.yaml#/components/schemas/Paging'
+
+  responses:
+    EntitiesResponse:
+      description: "Справочник сущностей"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entity'
+    ActionsResponse:
+      description: "Справочник действий"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Action'
+    LogsResponse:
+      description: "Журнал действий"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/LogId'
+                    actor:
+                      $ref: '#/components/schemas/Actor'
+                    action_code:
+                      $ref: '#/components/schemas/ActionCode'
+                    entity_code:
+                      $ref: '#/components/schemas/EntityCode'
+                    entity_id:
+                      $ref: '#/components/schemas/EntityKey'
+                    changes:
+                      $ref: '#/components/schemas/Changes'
+                    created_at:
+                      $ref: '../common/components.yaml#/components/schemas/CreatedAt'
+              meta:
+                $ref: './../common/filters.yaml#/components/schemas/MetaPage'

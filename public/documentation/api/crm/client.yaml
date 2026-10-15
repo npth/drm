@@ -1,0 +1,979 @@
+openapi: 3.1.0
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+components:
+  schemas:
+    ClientId:
+      type: integer
+      description: "Код клиента"
+      example: 123
+    Email:
+      type: string
+      description: "Email клиента"
+      example: "test@test.ru"
+    Name:
+      type: string
+      description: "Имя клиента"
+      example: "Роман"
+    Password:
+      type: string
+      description: "Пароль"
+      example: 'password'
+    Phone:
+      type:
+        - "string"
+        - "null"
+      description: "Телефон"
+      example: "+7 (918) 111-22-33"
+    TypeId:
+      type: integer
+      description: "Тип клиента из справочника types"
+      example: 1
+    TypeName:
+      type: string
+      description: "Тип клиента из справочника types"
+      example: "риелтор"
+    RegionId:
+      type: integer
+      description: "Код региона из справочника regions"
+      example: 1
+    RegionName:
+      type: string
+      description: "Регион из справочника regions"
+      example: "Краснодарский край"
+    DistrictId:
+      type: integer
+      nullable: true
+      description: "Код района из справочника districts"
+      example: 10
+    DistrictName:
+      type: string
+      description: "Район из справочника districts"
+      example: "Краснодар"
+    Company:
+      type:
+        - "string"
+        - "null"
+      description: "Наименование организации"
+      example: "ООО Агентство"
+    RegisteredAt:
+      type:
+        - "string"
+        - "null"
+      format: "datetime"
+      description: "Дата регистрации"
+      example: "2025-03-22 12:20:12+03"
+    Active:
+      type:
+        - "boolean"
+        - "integer"
+      description: "Активна ли учетная запись"
+      example: true
+    # Данные менеджера
+    ManagerId:
+      type: [number, "null"]
+      nullable: true
+      description: "Код менеджера из справочника users"
+      example: 1
+    ManagerName:
+      type: string
+      nullable: true
+      description: "Менеджер из справочника users"
+      example: "Николай"
+    ManagedAt:
+      type:
+        - "string"
+        - "null"
+      format: "datetime"
+      nullable: true
+      description: "Дата управления"
+      example: "2025-03-22 12:20:12+03"
+    Note:
+      type:
+        - "string"
+        - "null"
+      description: "Примечание"
+      example: "премиальный клиент"
+
+    # Баланс
+    BalanceBonus:
+      type:
+        - "integer"
+        - "null"
+      nullable: true
+      description: "Баланс бонусного счета"
+      example: 100
+    OperationId:
+      type: integer
+      description: "Код операции"
+      example: 123
+    OperationExecutedAt:
+      type:
+        - "string"
+        - "null"
+      format: "datetime"
+      nullable: true
+      description: "Дата проведения операции"
+      example: "2025-03-22 12:20:12+03"
+    OperationTypeId:
+      type: integer
+      description: "Код типа операции"
+      example: 1
+    OperationTypeName:
+      type: string
+      description: "Наименование типа операции"
+      example: "Пополнение"
+    OperationDescription:
+      type: string
+      description: "Примечание к операции"
+      example: "Пополнение счета через Сбербанк"
+    OperationDeltaBonus:
+      type: string
+      format: number
+      description: "Сумма операции бонусного счета, может быть отрицательной"
+      example: "123.45"
+    OperationCount:
+      type: number
+      description: "Количество операций"
+      example: 12
+    OperationType:
+      type: object
+      description: "Тип операции"
+      properties:
+        id:
+          $ref: "#/components/schemas/OperationTypeId"
+        name:
+          $ref: "#/components/schemas/OperationTypeName"
+
+    ClientType:
+      type: object
+      description: "Тип клиента"
+      properties:
+        id:
+          $ref: "#/components/schemas/TypeId"
+        name:
+          $ref: "#/components/schemas/TypeName"
+
+    TypeInsert:
+      type: object
+      description: "Тип клиента"
+      properties:
+        name:
+          $ref: "#/components/schemas/TypeName"
+      required:
+        - name
+
+    TypeUpdate:
+      type: object
+      description: "Тип клиента"
+      properties:
+        id:
+          $ref: "#/components/schemas/TypeId"
+        name:
+          $ref: "#/components/schemas/TypeName"
+      required:
+        - id
+        - name
+
+    TypeDelete:
+      type: object
+      description: "Тип клиента"
+      properties:
+        id:
+          $ref: "#/components/schemas/TypeId"
+      required:
+        - id
+
+    Manager:
+      type: object
+      description: "Менеджер"
+      properties:
+        id:
+          $ref: "#/components/schemas/ManagerId"
+        name:
+          $ref: "#/components/schemas/ManagerName"
+
+    Region:
+      type: object
+      description: "Регион"
+      properties:
+        id:
+          $ref: "#/components/schemas/RegionId"
+        name:
+          $ref: "#/components/schemas/RegionName"
+
+    District:
+      type: object
+      description: "Район"
+      properties:
+        id:
+          $ref: "#/components/schemas/DistrictId"
+        region_id:
+          $ref: "#/components/schemas/RegionId"
+        name:
+          $ref: "#/components/schemas/DistrictName"
+
+    Contact:
+      type: object
+      properties:
+        phone:
+          $ref: "./../contacts/contact.yaml#/components/schemas/PhoneRaw"
+        is_main:
+          $ref: "./../contacts/contact.yaml#/components/schemas/IsMain"
+        has_call:
+          $ref: "./../contacts/contact.yaml#/components/schemas/HasCall"
+        has_sms:
+          $ref: "./../contacts/contact.yaml#/components/schemas/HasSms"
+        has_telegram:
+          $ref: "./../contacts/contact.yaml#/components/schemas/HasTelegram"
+        has_whatsapp:
+          $ref: "./../contacts/contact.yaml#/components/schemas/HasWhatsapp"
+        has_max:
+          $ref: "./../contacts/contact.yaml#/components/schemas/HasMax"
+    Contacts:
+      type: array
+      description: "Контакты клиента"
+      items:
+        $ref: "#/components/schemas/Contact"
+
+    Management:
+      type: object
+      properties:
+        manager_id:
+          $ref: '#/components/schemas/ManagerId'
+        managed_at:
+          $ref: '#/components/schemas/ManagedAt'
+        note:
+          $ref: '#/components/schemas/Note'
+    Balance:
+      type: object
+      properties:
+        client_id:
+          $ref: '#/components/schemas/ClientId'
+        bonus:
+          $ref: '#/components/schemas/BalanceBonus'
+    ClientLite:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ClientId'
+        email:
+          $ref: '#/components/schemas/Email'
+        name:
+          $ref: '#/components/schemas/Name'
+    Employee:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ClientId'
+        email:
+          $ref: '#/components/schemas/Email'
+        name:
+          $ref: '#/components/schemas/Name'
+        type_id:
+          $ref: '#/components/schemas/TypeId'
+        region_id:
+          $ref: '#/components/schemas/RegionId'
+        district_id:
+          $ref: '#/components/schemas/DistrictId'
+        company:
+          $ref: '#/components/schemas/Company'
+        registered_at:
+          $ref: '#/components/schemas/RegisteredAt'
+        active:
+          $ref: '#/components/schemas/Active'
+    ClientView:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ClientId'
+        email:
+          $ref: '#/components/schemas/Email'
+        name:
+          $ref: '#/components/schemas/Name'
+        type_id:
+          $ref: '#/components/schemas/TypeId'
+        region_id:
+          $ref: '#/components/schemas/RegionId'
+        district_id:
+          $ref: '#/components/schemas/DistrictId'
+        company:
+          $ref: '#/components/schemas/Company'
+        registered_at:
+          $ref: '#/components/schemas/RegisteredAt'
+        active:
+          $ref: '#/components/schemas/Active'
+        created_at:
+          $ref: '#/components/schemas/RegisteredAt'
+        updated_at:
+          $ref: '#/components/schemas/RegisteredAt'
+        contacts:
+          $ref: '#/components/schemas/Contacts'
+        management:
+          $ref: '#/components/schemas/Management'
+        balance:
+          $ref: '#/components/schemas/Balance'
+        permissions:
+          type: object
+          description: "Права доступа"
+          properties:
+            update:
+              type: boolean
+              description: "Обновление клиента, за исключением электронного адреса, пароля и менеджера"
+              example: true
+            change_email:
+              type: boolean
+              description: "Смена электронного адреса"
+              example: true
+            change_password:
+              type: boolean
+              description: "Смена пароля"
+              example: true
+            change_balance:
+              type: boolean
+              description: "Изменение баланса"
+              example: true
+            change_manager:
+              type: boolean
+              description: "Изменение менеджера клиента"
+              example: true
+            delete:
+              type: boolean
+              description: "Удаление клиента"
+              example: true
+
+    ClientSearch:
+      type: object
+      properties:
+        filters:
+          type: array
+          description: "Набор фильтров"
+          items:
+            oneOf:
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Поиск клиентов, чьи поля email, name или phone содержат указанную строку без учета регистра"
+                    example: "search"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorLike'
+                  value:
+                    type: string
+                    description: "Значение"
+                    example: "Иван"
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Код клиента"
+                    example: "id"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      type: integer
+                      description: "Код клиента"
+                      example: 123
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Поиск по электронной почте"
+                    example: "email"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorLike'
+                  value:
+                    type: string
+                    description: "Значение"
+                    example: "ivan@"
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Поиск по имени клиента"
+                    example: "name"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorLike'
+                  value:
+                    type: string
+                    description: "Значение"
+                    example: "иван"
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Код типа клиента"
+                    example: "type_id"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TypeId'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Код региона"
+                    example: "region_id"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      $ref: '../geography/region.yaml#/components/schemas/RegionId'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Код района"
+                    example: "district_id"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      $ref: '../geography/district.yaml#/components/schemas/DistrictId'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Наименование организации"
+                    example: "company"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorLike'
+                  value:
+                    type: string
+                    description: "Часть наименования"
+                    example: "ооо"
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Дата регистрации клиента"
+                    example: "registered_at"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+                  from:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeFrom'
+                  to:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeTo'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Активен ли клиент"
+                    example: "active"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorFieldBooleanValue'
+                  value:
+                    $ref: '../common/filters.yaml#/components/schemas/FieldBooleanValue'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Дата создания записи клиента"
+                    example: "created_at"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+                  from:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeFrom'
+                  to:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeTo'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Дата обновления записи клиента"
+                    example: "updated_at"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+                  from:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeFrom'
+                  to:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeTo'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Код менеджера"
+                    example: "management.manager_id"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ManagerId'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Дата обработки менеджером"
+                    example: "management.managed_at"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+                  from:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeFrom'
+                  to:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeTo'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Примечание"
+                    example: "management.note"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorLike'
+                  value:
+                    type: string
+                    description: "Часть примечание"
+                    example: "необходимо"
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Остаток на бонусном счете"
+                    example: "balance.bonus"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+                  from:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldNumberFrom'
+                  to:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldNumberTo'
+        sorters:
+          $ref: './../common/filters.yaml#/components/schemas/Sorters'
+        paging:
+          $ref: './../common/filters.yaml#/components/schemas/Paging'
+
+    ClientInsert:
+      type: object
+      properties:
+        email:
+          $ref: '#/components/schemas/Email'
+        name:
+          $ref: '#/components/schemas/Name'
+        password:
+          $ref: '#/components/schemas/Password'
+        type_id:
+          $ref: '#/components/schemas/TypeId'
+        region_id:
+          $ref: '#/components/schemas/RegionId'
+        district_id:
+          $ref: '#/components/schemas/DistrictId'
+        company:
+          $ref: '#/components/schemas/Company'
+        registered_at:
+          $ref: '#/components/schemas/RegisteredAt'
+        active:
+          $ref: '#/components/schemas/Active'
+        management:
+          $ref: '#/components/schemas/Management'
+        contacts:
+          $ref: '#/components/schemas/Contacts'
+      required:
+        - email
+        - name
+        - password
+        - type_id
+        - region_id
+        - active
+    BalanceInsert:
+      type: object
+      properties:
+        client_id:
+          $ref: '#/components/schemas/ClientId'
+        operation_type_id:
+          $ref: '#/components/schemas/OperationTypeId'
+        executed_at:
+          $ref: '#/components/schemas/OperationExecutedAt'
+        description:
+          $ref: '#/components/schemas/OperationDescription'
+        bonus:
+          $ref: '#/components/schemas/OperationDeltaBonus'
+      required:
+        - client_id
+        - operation_type
+        - description
+        - value
+    ClientUpdate:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ClientId'
+        name:
+          $ref: '#/components/schemas/Name'
+        type_id:
+          $ref: '#/components/schemas/TypeId'
+        region_id:
+          $ref: '#/components/schemas/RegionId'
+        district_id:
+          $ref: '#/components/schemas/DistrictId'
+        company:
+          $ref: '#/components/schemas/Company'
+        registered_at:
+          $ref: '#/components/schemas/RegisteredAt'
+        active:
+          $ref: '#/components/schemas/Active'
+        management:
+          $ref: '#/components/schemas/Management'
+        contacts:
+          $ref: '#/components/schemas/Contacts'
+      required:
+        - id
+        - name
+        - type_id
+        - region_id
+        - active
+
+    ClientDelete:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ClientId'
+      required:
+        - id
+
+    OperationSearchFilters:
+      type: array
+      description: "Набор фильтров"
+      items:
+        oneOf:
+          - type: object
+            properties:
+              field:
+                type: string
+                description: "Код операции"
+                example: "id"
+              operator:
+                $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+              values:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OperationId'
+          - type: object
+            properties:
+              field:
+                type: string
+                description: "Код клиента"
+                example: "client_id"
+              operator:
+                $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+              values:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientId'
+          - type: object
+            properties:
+              field:
+                type: string
+                description: "Код типа операции"
+                example: "type_id"
+              operator:
+                $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+              values:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OperationTypeId'
+          - type: object
+            properties:
+              field:
+                type: string
+                description: "Дата исполнения"
+                example: "executed_at"
+              operator:
+                $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+              from:
+                $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeFrom'
+              to:
+                $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeTo'
+          - type: object
+            properties:
+              field:
+                type: string
+                description: "Сумма операции"
+                example: "bonus"
+              operator:
+                $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+              from:
+                $ref: './../common/filters.yaml#/components/schemas/FieldNumberFrom'
+              to:
+                $ref: './../common/filters.yaml#/components/schemas/FieldNumberTo'
+          - type: object
+            properties:
+              field:
+                type: string
+                description: "Описание"
+                example: "description"
+              operator:
+                $ref: './../common/filters.yaml#/components/schemas/OperatorLike'
+              value:
+                type: string
+                description: "Часть описания"
+                example: "платеж"
+    OperationSearch:
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/OperationSearchFilters'
+        sort:
+          $ref: './../common/filters.yaml#/components/schemas/Sorters'
+        page:
+          $ref: './../common/filters.yaml#/components/schemas/Page'
+        limit:
+          $ref: './../common/filters.yaml#/components/schemas/Limit'
+    OperationSearchSummary:
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/OperationSearchFilters'
+    Operation:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/OperationId'
+        client:
+          $ref: '#/components/schemas/ClientLite'
+        type_id:
+          $ref: '#/components/schemas/OperationTypeId'
+        executed_at:
+          $ref: '#/components/schemas/OperationExecutedAt'
+        bonus:
+          $ref: '#/components/schemas/OperationDeltaBonus'
+        description:
+          $ref: '#/components/schemas/OperationDescription'
+    OperationSummary:
+      type: object
+      properties:
+        client:
+          $ref: '#/components/schemas/ClientLite'
+        type_id:
+          $ref: '#/components/schemas/OperationTypeId'
+        rows_count:
+          $ref: '#/components/schemas/OperationCount'
+        total_bonus:
+          $ref: '#/components/schemas/OperationDeltaBonus'
+
+  parameters:
+
+  requestBodies:
+    TypeInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TypeInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/TypeInsert'
+    TypeUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TypeUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/TypeUpdate'
+    TypeDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TypeDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/TypeDelete'
+
+    ClientSearchRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClientSearch'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ClientSearch'
+    ClientInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClientInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ClientInsert'
+    BalanceInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BalanceInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/BalanceInsert'
+    OperationSearchRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OperationSearch'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/OperationSearch'
+    OperationSummaryRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OperationSearchSummary'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/OperationSearchSummary'
+    ClientUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClientUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ClientUpdate'
+    ClientDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClientDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ClientDelete'
+
+  responses:
+    BalanceResponse:
+      description: "Баланс"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Balance'
+    ClientResponse:
+      description: "Клиент"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClientView'
+    ClientsListResponse:
+      description: "Список клиентов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientView'
+              meta:
+                $ref: './../common/filters.yaml#/components/schemas/MetaPage'
+    PermissionsResponse:
+      description: "Права доступа на общие действия"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              create:
+                type: boolean
+                description: "Создание клиента"
+                example: true
+              export:
+                type: boolean
+                description: "Экспорт клиентов"
+                example: true
+    TypesResponse:
+      description: "Типы клиентов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Типы клиентов"
+                items:
+                  $ref: '#/components/schemas/ClientType'
+    TypeResponse:
+      description: "Тип клиента"
+      content:
+        application/json:
+          schema:
+            type: object
+            $ref: '#/components/schemas/ClientType'
+    OperationTypesResponse:
+      description: "Типы операций"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Типы операций"
+                items:
+                  $ref: '#/components/schemas/OperationType'
+    OperationTypeResponse:
+      description: "Тип операции"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Тип операции"
+                items:
+                  $ref: '#/components/schemas/OperationType'
+    ItemsResponse:
+      description: "Справочники"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              types:
+                type: array
+                description: "Типы клиентов"
+                items:
+                  $ref: '#/components/schemas/ClientType'
+              managers:
+                type: array
+                description: "Список менеджеров"
+                items:
+                  $ref: '#/components/schemas/Manager'
+              regions:
+                type: array
+                description: "Регионы"
+                items:
+                  $ref: '#/components/schemas/Region'
+              districts:
+                type: array
+                description: "Районы"
+                items:
+                  $ref: '#/components/schemas/District'
+    OperationsResponse:
+      description: "Список операций"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Operation'
+              meta:
+                $ref: './../common/filters.yaml#/components/schemas/MetaPage'
+    OperationsSummaryResponse:
+      description: "Сводная информация по операциям"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OperationSummary'

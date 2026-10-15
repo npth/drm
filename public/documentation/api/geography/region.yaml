@@ -1,0 +1,124 @@
+openapi: 3.0.1
+info:
+  title: "Регионы"
+  description: "Регионы"
+  version: 1.0.0
+components:
+  schemas:
+    RegionId:
+      type: integer
+      description: "ID региона"
+      example: 1
+    Ordnum:
+      type: integer
+      description: "Порядок сортировки"
+      example: 100000
+    RegionName:
+      type: string
+      description: "Наименование региона"
+      example: "Краснодарский край"
+    Active:
+      type: boolean
+      description: "Активна ли запись"
+      example: true
+    Region:
+      type: object
+      description: "Регион"
+      properties:
+        id:
+          $ref: "#/components/schemas/RegionId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/RegionName"
+        active:
+          $ref: "#/components/schemas/Active"
+        created_at:
+          $ref: "./../common/components.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "./../common/components.yaml#/components/schemas/UpdatedAt"
+    RegionInsert:
+      type: object
+      description: "Добавление региона"
+      properties:
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/RegionName"
+        active:
+          $ref: "#/components/schemas/Active"
+      required:
+        - ordnum
+        - name
+        - active
+    RegionUpdate:
+      type: object
+      description: "Обновление региона"
+      properties:
+        id:
+          $ref: "#/components/schemas/RegionId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/RegionName"
+        active:
+          $ref: "#/components/schemas/Active"
+      required:
+        - id
+        - ordnum
+        - name
+        - active
+    RegionDelete:
+      type: object
+      description: "Удаление региона"
+      properties:
+        id:
+          $ref: "#/components/schemas/RegionId"
+      required:
+        - id
+    Regions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Region'
+  requestBodies:
+    RegionInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegionInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/RegionInsert'
+    RegionUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegionUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/RegionUpdate'
+    RegionDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegionDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/RegionDelete'
+
+  responses:
+    RegionResponse:
+      description: "Регион"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Region'
+    RegionsListResponse:
+      description: "Список регионов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Regions'

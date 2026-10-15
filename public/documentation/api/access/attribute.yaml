@@ -1,0 +1,94 @@
+openapi: 3.1.0
+info:
+  title: "Атрибуты"
+  description: ""
+  version: 1.0.0
+components:
+  schemas:
+    AttributeCode:
+      type: string
+      description: "Метка атрибута"
+      example: "name"
+    Name:
+      type: string
+      description: "Наименование атрибута"
+      example: "Наименование"
+    TypeName:
+      type: string
+      description: "Наименование типа атрибута"
+      example: "Число"
+    TypeCode:
+      type: string
+      description: "Метка типа атрибута"
+      example: "number"
+    Operator:
+      type: string
+      description: "Оператор"
+      example: ">="
+    Operators:
+      type: array
+      description: "Допустимые операторы для фильтра"
+      example: ['=', '<=', '>=', '<>']
+
+    Type:
+      type: object
+      description: "Тип атрибута"
+      properties:
+        name:
+          $ref: "#/components/schemas/TypeName"
+        code:
+          $ref: "#/components/schemas/TypeCode"
+        operators:
+          $ref: "#/components/schemas/Operators"
+
+    Attribute:
+      type: object
+      description: "Атрибут"
+      properties:
+        code:
+          $ref: "#/components/schemas/AttributeCode"
+        name:
+          $ref: "#/components/schemas/Name"
+        type_name:
+          $ref: "#/components/schemas/TypeName"
+        type_code:
+          $ref: "#/components/schemas/TypeCode"
+
+    CategoryAttribute:
+      type: object
+      description: "Атрибут категории"
+      properties:
+        category:
+          $ref: "./category.yaml#/components/schemas/CategoryCode"
+        attribute:
+          $ref: "#/components/schemas/AttributeCode"
+
+  responses:
+    AttributeResponse:
+      description: "Атрибут"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Attribute'
+    TypesListResponse:
+      description: "Типы атрибутов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Type'
+    AttributesListResponse:
+      description: "Атрибуты"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Attribute'

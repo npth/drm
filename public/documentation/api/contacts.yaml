@@ -1,0 +1,235 @@
+openapi: 3.1.0
+info:
+  title: "Контакты"
+  description: "<a href=\"/documentation/index.html?entry=/api/index.yaml\">Главная</a>"
+  version: 1.0.0
+servers:
+  - url: '/api/contact'
+security:
+  - bearerAuth: []
+tags:
+  - name: contacts
+    description: "Контакты"
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: './common.yaml#/components/securitySchemes/bearerAuth'
+paths:
+  /contacts/list:
+    post:
+      tags:
+        - contacts
+      summary: "Список контактов"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: array
+                  description: "Набор фильтров"
+                  items:
+                    oneOf:
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Глобальный поиск по таблице"
+                            example: "search"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorFieldStringValue'
+                          value:
+                            type: string
+                            description: "Значение"
+                            example: "918"
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Поиск по номеру телефона"
+                            example: "phone"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorFieldStringValue'
+                          value:
+                            type: string
+                            description: "Значение"
+                            example: "918"
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Один из переданных телефонов"
+                            example: "phone"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorIn'
+                          values:
+                            type: array
+                            items:
+                              type: string
+                              description: "Значение"
+                              example: "9181234567"
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Номер телефона поддерживает звонки"
+                            example: "has_call"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorFieldBooleanValue'
+                          value:
+                            $ref: './common/filters.yaml#/components/schemas/FieldBooleanValue'
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Номер телефона поддерживает смс"
+                            example: "has_sms"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorFieldBooleanValue'
+                          value:
+                            $ref: './common/filters.yaml#/components/schemas/FieldBooleanValue'
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Номер телефона поддерживает Telegram"
+                            example: "has_telegram"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorFieldBooleanValue'
+                          value:
+                            $ref: './common/filters.yaml#/components/schemas/FieldBooleanValue'
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Номер телефона поддерживает Whatsapp"
+                            example: "has_whatsapp"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorFieldBooleanValue'
+                          value:
+                            $ref: './common/filters.yaml#/components/schemas/FieldBooleanValue'
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Номер телефона поддерживает Max"
+                            example: "has_max"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorFieldBooleanValue'
+                          value:
+                            $ref: './common/filters.yaml#/components/schemas/FieldBooleanValue'
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Дата создания"
+                            example: "created_at"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorFieldDateTimeValue'
+                          value:
+                            $ref: './common/filters.yaml#/components/schemas/FieldDateTimeValue'
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Дата создания"
+                            example: "created_at"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorIn'
+                          values:
+                            type: array
+                            items:
+                              $ref: './common/filters.yaml#/components/schemas/FieldDateTimeValue'
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Дата создания"
+                            example: "created_at"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorBetween'
+                          from:
+                            $ref: './common/filters.yaml#/components/schemas/FieldDateTimeValue'
+                          to:
+                            $ref: './common/filters.yaml#/components/schemas/FieldDateTimeValue'
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Дата изменения"
+                            example: "updated_at"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorFieldDateTimeValue'
+                          value:
+                            $ref: './common/filters.yaml#/components/schemas/FieldDateTimeValue'
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Дата изменения"
+                            example: "updated_at"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorIn'
+                          values:
+                            type: array
+                            items:
+                              $ref: './common/filters.yaml#/components/schemas/FieldDateTimeValue'
+                      - type: object
+                        properties:
+                          field:
+                            type: string
+                            description: "Дата изменения"
+                            example: "updated_at"
+                          operator:
+                            $ref: './common/filters.yaml#/components/schemas/OperatorBetween'
+                          from:
+                            $ref: './common/filters.yaml#/components/schemas/FieldDateTimeValue'
+                          to:
+                            $ref: './common/filters.yaml#/components/schemas/FieldDateTimeValue'
+                sorters:
+                  $ref: './common/filters.yaml#/components/schemas/Sorters'
+                paging:
+                  $ref: './common/filters.yaml#/components/schemas/Paging'
+
+      responses:
+        200:
+          $ref: './contacts/contact.yaml#/components/responses/ContactsListResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contacts/insert:
+    post:
+      tags:
+        - contacts
+      summary: "Добавление контакта"
+      requestBody:
+        $ref: './contacts/contact.yaml#/components/requestBodies/ContactInsertRequest'
+      responses:
+        200:
+          $ref: './contacts/contact.yaml#/components/responses/ContactResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contacts/update:
+    put:
+      tags:
+        - contacts
+      summary: "Обновление контакта"
+      requestBody:
+        $ref: './contacts/contact.yaml#/components/requestBodies/ContactUpdateRequest'
+      responses:
+        200:
+          $ref: './contacts/contact.yaml#/components/responses/ContactResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contacts/delete:
+    delete:
+      tags:
+        - contacts
+      summary: "Удаление контакта"
+      requestBody:
+        $ref: './contacts/contact.yaml#/components/requestBodies/ContactDeleteRequest'
+      responses:
+        204:
+          $ref: './common.yaml#/components/responses/EmptyResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'

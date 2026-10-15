@@ -1,0 +1,63 @@
+openapi: 3.1.0
+info:
+  title: "Роли"
+  description: "Роли"
+  version: 1.0.0
+components:
+  schemas:
+    ViewId:
+      type: integer
+      description: "ID конфигурации"
+      example: 123
+    Route:
+      type: string
+      description: "Маршрут"
+      example: "/contacts"
+    ViewData:
+      type: object
+      description: "Произвольная структура конфигурации. Бэкенд не валидирует содержимое."
+      additionalProperties: true
+
+  parameters:
+    ViewIdParam:
+      in: query
+      name: view
+      required: true
+      description: "ID конфигурации"
+      schema:
+        $ref: '#/components/schemas/ViewId'
+  requestBodies:
+    ViewInsertRequest:
+      description: "Сохранение конфигурации маршрута"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              route:
+                $ref: '#/components/schemas/Route'
+              data:
+                $ref: '#/components/schemas/ViewData'
+  responses:
+    ViewInsertResponse:
+      description: "Конфигурация успешно сохранена"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              view_id:
+                $ref: '#/components/schemas/ViewId'
+    ViewResponse:
+      description: "Конфигурация"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/ViewId'
+              route:
+                $ref: '#/components/schemas/Route'
+              data:
+                $ref: '#/components/schemas/ViewData'

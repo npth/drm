@@ -1,0 +1,132 @@
+openapi: 3.0.1
+info:
+  title: "Районы"
+  description: "Районы районов"
+  version: 1.0.0
+components:
+  schemas:
+    DistrictId:
+      type: integer
+      description: "ID района"
+      example: 2
+    Ordnum:
+      type: integer
+      description: "Порядок сортировки"
+      example: 100000
+    DistrictName:
+      type: string
+      description: "Наименование района"
+      example: "Краснодар"
+    Active:
+      type: boolean
+      description: "Активна ли запись"
+      example: true
+    District:
+      type: object
+      description: "Район региона"
+      properties:
+        id:
+          $ref: "#/components/schemas/DistrictId"
+        region_id:
+          $ref: "./region.yaml#/components/schemas/RegionId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/DistrictName"
+        active:
+          $ref: "#/components/schemas/Active"
+        created_at:
+          $ref: "./../common/components.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "./../common/components.yaml#/components/schemas/UpdatedAt"
+    DistrictInsert:
+      type: object
+      description: "Добавление района"
+      properties:
+        region_id:
+          $ref: "./region.yaml#/components/schemas/RegionId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/DistrictName"
+        active:
+          $ref: "#/components/schemas/Active"
+      required:
+        - region_id
+        - ordnum
+        - name
+        - active
+    DistrictUpdate:
+      type: object
+      description: "Обновление района"
+      properties:
+        id:
+          $ref: "#/components/schemas/DistrictId"
+        region_id:
+          $ref: "./region.yaml#/components/schemas/RegionId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/DistrictName"
+        active:
+          $ref: "#/components/schemas/Active"
+      required:
+        - id
+        - region_id
+        - ordnum
+        - name
+        - active
+    DistrictDelete:
+      type: object
+      description: "Удаление района"
+      properties:
+        id:
+          $ref: "#/components/schemas/DistrictId"
+      required:
+        - id
+    Districts:
+      type: array
+      items:
+        $ref: '#/components/schemas/District'
+  requestBodies:
+    DistrictInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DistrictInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/DistrictInsert'
+    DistrictUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DistrictUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/DistrictUpdate'
+    DistrictDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DistrictDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/DistrictDelete'
+
+  responses:
+    DistrictResponse:
+      description: "Район региона"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/District'
+    DistrictsListResponse:
+      description: "Список районов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Districts'

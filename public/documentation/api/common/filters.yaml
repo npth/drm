@@ -1,0 +1,190 @@
+openapi: 3.1.0
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+components:
+  schemas:
+    OperatorFieldFilter:
+      type: string
+      description: "Оператор, один из"
+      enum:
+        - "="
+        - ">"
+        - "<"
+        - ">="
+        - "<="
+        - "<>"
+        - "!="
+      example: '='
+    OperatorBetween:
+      type: string
+      description: "Оператор между (between), запрос будет выполнен с условиями >= и <="
+      example: 'between'
+    OperatorIn:
+      type: string
+      description: "Оператор один из"
+      example: 'in'
+    OperatorLike:
+      type: string
+      description: "Оператор содержит подстроку"
+      example: 'like'
+    OperatorNull:
+      type: string
+      description: "Оператор проверки на null значение"
+      example: 'null'
+    OperatorFieldNumberValue:
+      type: string
+      description: "Оператор, один из"
+      enum:
+        - "="
+        - "<>"
+        - "!="
+        - ">="
+        - "<="
+      example: '='
+    OperatorFieldStringValue:
+      type: string
+      description: "Оператор, один из"
+      enum:
+        - "like"
+        - "="
+        - "<>"
+        - "!="
+      example: 'like'
+    OperatorFieldBooleanValue:
+      type: string
+      description: "Оператор, один из"
+      enum:
+        - "="
+        - "<>"
+        - "!="
+      example: '='
+    FieldBooleanValue:
+      type: boolean
+      description: "Значение"
+      example: true
+    OperatorFieldDateTimeValue:
+      type: string
+      description: "Оператор, один из"
+      enum:
+        - "="
+        - ">"
+        - "<"
+        - "<>"
+        - "!="
+        - ">="
+        - "<="
+      example: '='
+    FieldDateTimeValue:
+      type: string
+      format: "date-time"
+      description: "Значение в формате ISO 8601"
+      example: "2026-04-01T17:16:02.000000Z"
+    FieldDateTimeFrom:
+      type: string
+      format: "date-time"
+      nullable: true
+      description: "Значение от в формате ISO 8601"
+      example: "2026-04-01T17:16:02.000000Z"
+    FieldDateTimeTo:
+      type: string
+      format: "date-time"
+      nullable: true
+      description: "Значение до в формате ISO 8601"
+      example: "2026-04-01T17:16:02.000000Z"
+    FieldNumberFrom:
+      type: string
+      nullable: true
+      description: "Вещественное значение от"
+      example: "100.12"
+    FieldNumberTo:
+      type: string
+      nullable: true
+      description: "Вещественное значение до"
+      example: "200.20"
+    FieldIntegerFrom:
+      type: integer
+      nullable: true
+      description: "Целое значение от"
+      example: 100
+    FieldIntegerTo:
+      type: integer
+      nullable: true
+      description: "Целое значение до"
+      example: 2000
+
+    SearchText:
+      type: string
+      description: "Строка поиска"
+      example: "строка"
+
+    SortField:
+      type: string
+      description: "Имя поля сортировки"
+      example: "name"
+    SortDirection:
+      type: string
+      description: "Направление сортировки asc/desc"
+      example: "asc"
+    Sorters:
+      type: array
+      description: "Массив сортировок в порядке применения"
+      items:
+        type: object
+        properties:
+          field:
+            $ref: "#/components/schemas/SortField"
+          direction:
+            $ref: "#/components/schemas/SortDirection"
+
+    Limit:
+      type: integer
+      description: "Количество на странице"
+      example: 10
+    Page:
+      type: integer
+      description: "Номер страницы"
+      example: 1
+    Paging:
+      type: object
+      description: "Параметры страницы"
+      properties:
+        page:
+          $ref: '#/components/schemas/Page'
+        limit:
+          $ref: '#/components/schemas/Limit'
+    MetaPage:
+      type: object
+      description: "Информация о странице"
+      properties:
+        page:
+          $ref: '#/components/schemas/Page'
+        limit:
+          $ref: '#/components/schemas/Limit'
+        total:
+          type: integer
+          description: "Всего записей по фильтру"
+          example: 1000
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      description: "Номер страницы"
+      required: false
+      schema:
+        $ref: '#/components/schemas/Page'
+    LimitParam:
+      name: limit
+      in: query
+      description: "Количество элементов на страниц"
+      required: false
+      schema:
+        $ref: '#/components/schemas/Limit'
+    SearchParam:
+      name: search
+      in: query
+      description: "Строка поиска"
+      required: false
+      schema:
+        $ref: '#/components/schemas/SearchText'
