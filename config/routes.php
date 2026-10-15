@@ -82,6 +82,12 @@ return static function (App $app): void {
                 $group->put('/update', Action\Geography\District\Update::class);
                 $group->delete('/delete', Action\Geography\District\Delete::class);
             });
+            $group->group('/points', function (RouteCollectorProxy $group): void {
+                $group->get('/list', Action\Geography\Point\Listing::class);
+                $group->post('/insert', Action\Geography\Point\Insert::class);
+                $group->put('/update', Action\Geography\Point\Update::class);
+                $group->delete('/delete', Action\Geography\Point\Delete::class);
+            });
         })->add(RequireAuth::class);
 
         $group->group('/crm', function (RouteCollectorProxy $group): void {
@@ -144,7 +150,7 @@ return static function (App $app): void {
 
             $group->get('/contracts/statuses/list', Action\Crm\Contract\Statuses::class);
             $group->get('/contracts/payment-statuses/list', Action\Crm\Contract\PaymentStatuses::class);
-            $group->get('/contracts/payer-types/list', Action\Crm\Contract\PayerTypes::class);
+            $group->get('/contracts/payer-types/list', Action\Crm\Contract\PayerType::class);
             $group->get('/contracts/payment-methods/list', Action\Crm\Contract\PaymentMethods::class);
 
             $group->post('/contracts/list', Action\Crm\Contract\Contracts::class);

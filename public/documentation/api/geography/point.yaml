@@ -1,0 +1,132 @@
+openapi: 3.0.1
+info:
+  title: "Населённые пункты"
+  description: "Справочник населённых пунктов"
+  version: 1.0.0
+components:
+  schemas:
+    PointId:
+      type: integer
+      description: "ID населённого пункта"
+      example: 2
+    Ordnum:
+      type: integer
+      description: "Порядковый номер"
+      example: 100000
+    PointName:
+      type: string
+      description: "Название населённого пункта"
+      example: "Зеленоград"
+    Active:
+      type: boolean
+      description: "Признак активности записи"
+      example: true
+    Point:
+      type: object
+      description: "Населённый пункт"
+      properties:
+        id:
+          $ref: "#/components/schemas/PointId"
+        district_id:
+          $ref: "./district.yaml#/components/schemas/DistrictId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/PointName"
+        active:
+          $ref: "#/components/schemas/Active"
+        created_at:
+          $ref: "./../common/components.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "./../common/components.yaml#/components/schemas/UpdatedAt"
+    PointInsert:
+      type: object
+      description: "Создание населённого пункта"
+      properties:
+        district_id:
+          $ref: "./district.yaml#/components/schemas/DistrictId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/PointName"
+        active:
+          $ref: "#/components/schemas/Active"
+      required:
+        - district_id
+        - ordnum
+        - name
+        - active
+    PointUpdate:
+      type: object
+      description: "Обновление населённого пункта"
+      properties:
+        id:
+          $ref: "#/components/schemas/PointId"
+        district_id:
+          $ref: "./district.yaml#/components/schemas/DistrictId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/PointName"
+        active:
+          $ref: "#/components/schemas/Active"
+      required:
+        - id
+        - district_id
+        - ordnum
+        - name
+        - active
+    PointDelete:
+      type: object
+      description: "Удаление населённого пункта"
+      properties:
+        id:
+          $ref: "#/components/schemas/PointId"
+      required:
+        - id
+    Points:
+      type: array
+      items:
+        $ref: '#/components/schemas/Point'
+  requestBody:
+    PointInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PointInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/PointInsert'
+    PointUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PointUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/PointUpdate'
+    PointDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PointDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/PointDelete'
+
+  responses:
+    PointResponse:
+      description: "Населённый пункт"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Point'
+    PointsListResponse:
+      description: "Список населённых пунктов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Points'

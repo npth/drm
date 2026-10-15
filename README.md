@@ -29,47 +29,78 @@ CRM-система для управления базой объектов не�
 ### Структура проекта
 
 ```
+├── config/
+│   └── routes.php                    # Маршруты API
+│
 ├── src/
 │   ├── Geography/                    # Справочники географии
 │   │   ├── MacroRegion/              # Макрорегионы
-│   │   │   ├── MacroRegion.php       # Сущность
-│   │   │   ├── MacroRegionRepository.php
-│   │   │   ├── MacroRegionService.php
-│   │   │   ├── MacroRegionController.php
-│   │   │   ├── routes.php
-│   │   │   └── migrations/
+│   │   │   ├── Entity/
+│   │   │   │   ├── MacroRegion.php
+│   │   │   │   ├── MacroRegionDto.php
+│   │   │   │   ├── MacroRegionId.php
+│   │   │   │   ├── Code.php
+│   │   │   │   └── Name.php
+│   │   │   ├── Command/
+│   │   │   │   ├── Delete/
+│   │   │   │   ├── Insert/
+│   │   │   │   └── Update/
+│   │   │   ├── Query/
+│   │   │   │   └── List/
+│   │   │   └── Repository/
 │   │   │
 │   │   ├── Region/                   # Регионы
-│   │   │   ├── Region.php
-│   │   │   ├── RegionRepository.php
-│   │   │   ├── RegionService.php
-│   │   │   ├── RegionController.php
-│   │   │   ├── routes.php
-│   │   │   └── migrations/
+│   │   │   ├── Entity/
+│   │   │   ├── Command/
+│   │   │   ├── Query/
+│   │   │   └── Repository/
 │   │   │
 │   │   ├── District/                 # Районы
-│   │   │   ├── District.php
-│   │   │   ├── DistrictRepository.php
-│   │   │   ├── DistrictService.php
-│   │   │   ├── DistrictController.php
-│   │   │   ├── routes.php
-│   │   │   └── migrations/
+│   │   │   ├── Entity/
+│   │   │   ├── Command/
+│   │   │   ├── Query/
+│   │   │   └── Repository/
 │   │   │
 │   │   └── Point/                    # Населённые пункты
-│   │       ├── Point.php             # Сущность
-│   │       ├── PointRepository.php   # Репозиторий (CRUD)
-│   │       ├── PointService.php      # Бизнес-логика
-│   │       ├── PointController.php   # HTTP контроллер
-│   │       ├── routes.php            # Маршруты API
-│   │       └── migrations/
-│   │           └── 2025_01_01_create_points_table.sql
+│   │       ├── Entity/
+│   │       │   ├── Point.php
+│   │       │   ├── PointDto.php
+│   │       │   ├── PointId.php
+│   │       │   └── Name.php
+│   │       ├── Command/
+│   │       │   ├── Delete/
+│   │       │   ├── Insert/
+│   │       │   └── Update/
+│   │       ├── Query/
+│   │       │   └── List/
+│   │       └── Repository/
+│   │           ├── PointModel.php
+│   │           └── PointRepository.php
+│   │
+│   ├── Http/
+│   │   └── Action/
+│   │       └── Geography/
+│   │           ├── MacroRegion/
+│   │           ├── Region/
+│   │           ├── District/
+│   │           └── Point/
+│   │               ├── Listing.php
+│   │               ├── Insert.php
+│   │               ├── Update.php
+│   │               ├── Delete.php
+│   │               └── Transformer.php
 │   │
 │   └── ... (другие модули)
 │
 ├── public/
 │   └── documentation/
 │       └── api/
-│           └── geography.yaml        # OpenAPI документация
+│           ├── geography.yaml        # OpenAPI документация
+│           └── geography/
+│               ├── macroregion.yaml
+│               ├── region.yaml
+│               ├── district.yaml
+│               └── point.yaml
 │
 └── ...
 ```
