@@ -1,0 +1,43 @@
+openapi: 3.0.3
+info:
+  title: Общие компоненты
+  description: "Общие компоненты"
+  version: 1.0.0
+paths:
+  /dummy:
+    get:
+      responses:
+        200:
+          $ref: "#/components/responses/MessageResponse"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    MessageResponse:
+      description: "Сообщение"
+      content:
+        application/json:
+          schema:
+            title: ""
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Сообщение"
+                example: "Сообщение"
+    SuccessResponse:
+      description: "Успешное выполнение"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                description: "Признак успешного выполнения"
+                example: true
+    EmptyResponse:
+      description: "Успешное выполнение, ответ не содержит тело"

@@ -1,0 +1,236 @@
+openapi: 3.1.0
+info:
+  title: "Настройка прав доступа"
+  description: "<a href=\"/documentation/index.html?entry=/api/index.yaml\">Главная</a>"
+  version: 1.0.0
+servers:
+  - url: '/api/access'
+security:
+  - bearerAuth: []
+tags:
+  - name: attribute
+    description: "Категории и атрибуты"
+  - name: role
+    description: "Роли"
+  - name: rule
+    description: "Правила"
+  - name: user
+    description: "Пользователи"
+  - name: session
+    description: "Сессии"
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: './common.yaml#/components/securitySchemes/bearerAuth'
+paths:
+  /resources/list:
+    get:
+      tags:
+        - attribute
+      summary: "Ресурсы по группам"
+      responses:
+        200:
+          $ref: './access/category.yaml#/components/responses/ResourcesListResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /attributes/types:
+    get:
+      tags:
+        - attribute
+      summary: "Типы атрибутов"
+      responses:
+        200:
+          $ref: './access/attribute.yaml#/components/responses/TypesListResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /attributes:
+    get:
+      tags:
+        - attribute
+      summary: "Атрибуты категории(й)"
+      parameters:
+        - $ref: './access/category.yaml#/components/parameters/CategoriesParam'
+      responses:
+        200:
+          $ref: './access/category.yaml#/components/responses/CategoryWithAttributesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /actions:
+    get:
+      tags:
+        - attribute
+      summary: "Список доступных действий (все или по ресурсу)"
+      parameters:
+        - $ref: './access/category.yaml#/components/parameters/ResourceParam'
+      responses:
+        200:
+          $ref: './access/category.yaml#/components/responses/ActionsListResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /roles/list:
+    get:
+      tags:
+        - role
+      summary: "Список ролей"
+      responses:
+        200:
+          $ref: './access/role.yaml#/components/responses/RolesListResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /roles/insert:
+    post:
+      tags:
+        - role
+      summary: "Создание роли"
+      requestBody:
+        $ref: './access/role.yaml#/components/requestBodies/RoleInsertRequest'
+      responses:
+        200:
+          $ref: './access/role.yaml#/components/responses/RoleResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /roles/update:
+    put:
+      tags:
+        - role
+      summary: "Обновление роли"
+      requestBody:
+        $ref: './access/role.yaml#/components/requestBodies/RoleUpdateRequest'
+      responses:
+        200:
+          $ref: './access/role.yaml#/components/responses/RoleResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /roles/delete:
+    delete:
+      tags:
+        - role
+      summary: "Удаление роли"
+      requestBody:
+        $ref: './access/role.yaml#/components/requestBodies/RoleDeleteRequest'
+      responses:
+        204:
+          $ref: './common.yaml#/components/responses/EmptyResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+
+  /rules/list:
+    get:
+      tags:
+        - rule
+      summary: "Правила роли"
+      parameters:
+        - $ref: './access/role.yaml#/components/parameters/RoleIdParam'
+      responses:
+        200:
+          $ref: './access/rule.yaml#/components/responses/RulesListResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /rules/insert:
+    post:
+      tags:
+        - rule
+      summary: "Добавление правила"
+      requestBody:
+        $ref: './access/rule.yaml#/components/requestBodies/RuleCreateRequest'
+      responses:
+        200:
+          $ref: './access/rule.yaml#/components/responses/RuleResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /rules/update:
+    put:
+      tags:
+        - rule
+      summary: "Обновление правила"
+      requestBody:
+        $ref: './access/rule.yaml#/components/requestBodies/RuleUpdateRequest'
+      responses:
+        200:
+          $ref: './access/rule.yaml#/components/responses/RuleResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /rules/delete:
+    delete:
+      tags:
+        - rule
+      summary: "Удаление правила"
+      requestBody:
+        $ref: './access/rule.yaml#/components/requestBodies/RuleDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /users/list:
+    get:
+      tags:
+        - user
+      summary: "Список пользователей"
+      responses:
+        200:
+          $ref: './access/user.yaml#/components/responses/UsersListResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /users/insert:
+    post:
+      tags:
+        - user
+      summary: "Добавление пользователя"
+      requestBody:
+        $ref: './access/user.yaml#/components/requestBodies/UserCreateRequest'
+      responses:
+        200:
+          $ref: './access/user.yaml#/components/responses/UserResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /users/update:
+    put:
+      tags:
+        - user
+      summary: "Обновление пользователя"
+      requestBody:
+        $ref: './access/user.yaml#/components/requestBodies/UserUpdateRequest'
+      responses:
+        200:
+          $ref: './access/user.yaml#/components/responses/UserResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /users/delete:
+    delete:
+      tags:
+        - user
+      summary: "Удаление пользователя"
+      requestBody:
+        $ref: './access/user.yaml#/components/requestBodies/UserDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /sessions/list:
+    get:
+      tags:
+        - session
+      summary: "Список сессий"
+      responses:
+        200:
+          $ref: './access/user.yaml#/components/responses/SessionsListResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /sessions/delete:
+    delete:
+      tags:
+        - session
+      summary: "Завершение сессии"
+      requestBody:
+        $ref: './access/user.yaml#/components/requestBodies/SessionDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'

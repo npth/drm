@@ -1,0 +1,703 @@
+openapi: 3.1.0
+info:
+  title: "СРМ (Клиенты и счета)"
+  description: "<a href=\"/documentation/index.html?entry=/api/index.yaml\">Главная</a>"
+  version: 1.0.0
+servers:
+  - url: '/api/crm'
+security:
+  - bearerAuth: []
+tags:
+  - name: client
+    description: "Клиенты"
+  - name: balance
+    description: "Баланс"
+  - name: contract-items
+    description: "Справочники счетов"
+  - name: tariff
+    description: "Тарифы"
+  - name: contract
+    description: "Счета"
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: './common.yaml#/components/securitySchemes/bearerAuth'
+paths:
+  /clients/types:
+    get:
+      tags:
+        - client
+      summary: "Типы клиентов"
+      responses:
+        200:
+          $ref: './crm/client.yaml#/components/responses/TypesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /clients/types/insert:
+    post:
+      tags:
+        - client
+      summary: "Добавление нового типа клиента"
+      requestBody:
+        $ref: './crm/client.yaml#/components/requestBodies/TypeInsertRequest'
+      responses:
+        200:
+          $ref: './crm/client.yaml#/components/responses/TypeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /clients/types/update:
+    put:
+      tags:
+        - client
+      summary: "Обновление типа клиента"
+      requestBody:
+        $ref: './crm/client.yaml#/components/requestBodies/TypeUpdateRequest'
+      responses:
+        200:
+          $ref: './crm/client.yaml#/components/responses/TypeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /clients/types/delete:
+    delete:
+      tags:
+        - client
+      summary: "Удаление типа клиента"
+      requestBody:
+        $ref: './crm/client.yaml#/components/requestBodies/TypeDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /clients/list:
+    post:
+      tags:
+        - client
+      summary: "Список клиентов"
+      requestBody:
+        $ref: './crm/client.yaml#/components/requestBodies/ClientSearchRequest'
+      responses:
+        200:
+          $ref: './crm/client.yaml#/components/responses/ClientsListResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /clients/permissions:
+    get:
+      tags:
+        - client
+      summary: "Права доступа на общие действия"
+      responses:
+        200:
+          $ref: './crm/client.yaml#/components/responses/PermissionsResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /clients/insert:
+    post:
+      tags:
+        - client
+      summary: "Добавление нового клиента"
+      requestBody:
+        $ref: './crm/client.yaml#/components/requestBodies/ClientInsertRequest'
+      responses:
+        200:
+          $ref: './crm/client.yaml#/components/responses/ClientResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /clients/update:
+    put:
+      tags:
+        - client
+      summary: "Обновление данных клиента"
+      requestBody:
+        $ref: './crm/client.yaml#/components/requestBodies/ClientUpdateRequest'
+      responses:
+        200:
+          $ref: './crm/client.yaml#/components/responses/ClientResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /clients/delete:
+    delete:
+      tags:
+        - client
+      summary: "Удаление клиента"
+      requestBody:
+        $ref: './crm/client.yaml#/components/requestBodies/ClientDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /balance/operations/types:
+    get:
+      tags:
+        - balance
+      summary: "Типы операций с балансом"
+      responses:
+        200:
+          $ref: './crm/client.yaml#/components/responses/OperationTypesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /balance/operations/types/insert:
+    post:
+      tags:
+        - balance
+      summary: "Добавление нового типа операции"
+      requestBody:
+        $ref: './crm/client.yaml#/components/requestBodies/TypeInsertRequest'
+      responses:
+        200:
+          $ref: './crm/client.yaml#/components/responses/OperationTypeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /balance/operations/types/update:
+    put:
+      tags:
+        - balance
+      summary: "Обновление типа операции"
+      requestBody:
+        $ref: './crm/client.yaml#/components/requestBodies/TypeUpdateRequest'
+      responses:
+        200:
+          $ref: './crm/client.yaml#/components/responses/OperationTypeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /balance/operations/types/delete:
+    delete:
+      tags:
+        - balance
+      summary: "Удаление типа операции"
+      requestBody:
+        $ref: './crm/client.yaml#/components/requestBodies/TypeDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /balance/operations/insert:
+    post:
+      tags:
+        - balance
+      summary: "Добавление операции по балансу"
+      requestBody:
+        $ref: './crm/client.yaml#/components/requestBodies/BalanceInsertRequest'
+      responses:
+        200:
+          $ref: './crm/client.yaml#/components/responses/BalanceResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /balance/operations/list:
+    post:
+      tags:
+        - balance
+      summary: "Список операций"
+      requestBody:
+        $ref: './crm/client.yaml#/components/requestBodies/OperationSearchRequest'
+      responses:
+        200:
+          $ref: './crm/client.yaml#/components/responses/OperationsResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /balance/operations/summary:
+    post:
+      tags:
+        - balance
+      summary: "Сводная информация по операциям"
+      requestBody:
+        $ref: './crm/client.yaml#/components/requestBodies/OperationSummaryRequest'
+      responses:
+        200:
+          $ref: './crm/client.yaml#/components/responses/OperationsSummaryResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /contracts/types/list:
+    get:
+      tags:
+        - contract-items
+      summary: "Типы счетов"
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/TypesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/types/insert:
+    post:
+      tags:
+        - contract-items
+      summary: "Добавление нового типа счета"
+      requestBody:
+        $ref: './crm/contract.yaml#/components/requestBodies/TypeInsertRequest'
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/TypeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/types/update:
+    put:
+      tags:
+        - contract-items
+      summary: "Обновление типа счета"
+      requestBody:
+        $ref: './crm/contract.yaml#/components/requestBodies/TypeUpdateRequest'
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/TypeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/types/delete:
+    delete:
+      tags:
+        - contract-items
+      summary: "Удаление типа счета"
+      requestBody:
+        $ref: './crm/contract.yaml#/components/requestBodies/TypeDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /tariffs/groups/list:
+    get:
+      tags:
+        - tariff
+      summary: "Линейки тарифов"
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/GroupsResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/groups/insert:
+    post:
+      tags:
+        - tariff
+      summary: "Добавление новой линейки тарифов"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/GroupInsertRequest'
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/GroupResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/groups/update:
+    put:
+      tags:
+        - tariff
+      summary: "Обновление линейки тарифов"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/GroupUpdateRequest'
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/GroupResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/groups/delete:
+    delete:
+      tags:
+        - tariff
+      summary: "Удаление линейки тарифов"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/GroupDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /tariffs/list:
+    get:
+      tags:
+        - tariff
+      summary: "Тарифы"
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/TariffsResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/insert:
+    post:
+      tags:
+        - tariff
+      summary: "Добавление нового тарифа"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/TariffInsertRequest'
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/TariffResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/update:
+    put:
+      tags:
+        - tariff
+      summary: "Обновление тарифа"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/TariffUpdateRequest'
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/TariffResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/delete:
+    delete:
+      tags:
+        - tariff
+      summary: "Удаление тарифа"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/TariffDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /tariffs/discounts/list:
+    get:
+      tags:
+        - tariff
+      summary: "Скидки за периоды"
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/DiscountsResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/discounts/insert:
+    post:
+      tags:
+        - tariff
+      summary: "Добавление новой скидки"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/DiscountInsertRequest'
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/DiscountResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/discounts/update:
+    put:
+      tags:
+        - tariff
+      summary: "Обновление скидки"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/DiscountUpdateRequest'
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/DiscountResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/discounts/delete:
+    delete:
+      tags:
+        - tariff
+      summary: "Удаление скидки"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/DiscountDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /tariffs/district-discounts/list:
+    get:
+      tags:
+        - tariff
+      summary: "Скидки по районам"
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/DistrictDiscountsResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/district-discounts/insert:
+    post:
+      tags:
+        - tariff
+      summary: "Добавление новой скидки"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/DistrictDiscountInsertRequest'
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/DistrictDiscountResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/district-discounts/update:
+    put:
+      tags:
+        - tariff
+      summary: "Обновление скидки"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/DistrictDiscountUpdateRequest'
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/DistrictDiscountResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/district-discounts/delete:
+    delete:
+      tags:
+        - tariff
+      summary: "Удаление скидки"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/DistrictDiscountDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /tariffs/promocodes/list:
+    get:
+      tags:
+        - tariff
+      summary: "Промокоды"
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/PromoCodesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/promocodes/insert:
+    post:
+      tags:
+        - tariff
+      summary: "Добавление нового промокода"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/PromoCodeInsertRequest'
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/PromoCodeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/promocodes/update:
+    put:
+      tags:
+        - tariff
+      summary: "Обновление промокода"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/PromoCodeUpdateRequest'
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/PromoCodeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/promocodes/delete:
+    delete:
+      tags:
+        - tariff
+      summary: "Удаление промокода"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/PromoCodeDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /tariffs/exchanges/list:
+    get:
+      tags:
+        - tariff
+      summary: "Тарифы на обмен"
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/ExchangesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/exchanges/insert:
+    post:
+      tags:
+        - tariff
+      summary: "Добавление нового тарифа на обмен"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/ExchangeInsertRequest'
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/ExchangeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/exchanges/update:
+    put:
+      tags:
+        - tariff
+      summary: "Обновление тарифа на обмен"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/ExchangeUpdateRequest'
+      responses:
+        200:
+          $ref: './crm/tariff.yaml#/components/responses/ExchangeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /tariffs/exchanges/delete:
+    delete:
+      tags:
+        - tariff
+      summary: "Удаление тарифа на обмен"
+      requestBody:
+        $ref: './crm/tariff.yaml#/components/requestBodies/ExchangeDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /contracts/statuses/list:
+    get:
+      tags:
+        - contract
+      summary: "Справочник статусов счета"
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/StatusesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/payment-statuses/list:
+    get:
+      tags:
+        - contract
+      summary: "Справочник статусов оплаты счета"
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/PaymentStatusesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/payer-types/list:
+    get:
+      tags:
+        - contract
+      summary: "Справочник типов плательщика, оплатить как"
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/PayerTypesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/payment-methods/list:
+    get:
+      tags:
+        - contract
+      summary: "Справочник методов оплаты"
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/PaymentMethodsResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/list:
+    post:
+      tags:
+        - contract
+      summary: "Счета"
+      requestBody:
+        $ref: './crm/contract.yaml#/components/requestBodies/ContractSearchRequest'
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/ContractsResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/insert:
+    post:
+      tags:
+        - contract
+      summary: "Добавление нового счета"
+      requestBody:
+        $ref: './crm/contract.yaml#/components/requestBodies/ContractInsertRequest'
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/ContractResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/update:
+    put:
+      tags:
+        - contract
+      summary: "Обновление счета"
+      requestBody:
+        $ref: './crm/contract.yaml#/components/requestBodies/ContractUpdateRequest'
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/ContractResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/delete:
+    delete:
+      tags:
+        - contract
+      summary: "Удаление счета"
+      requestBody:
+        $ref: './crm/contract.yaml#/components/requestBodies/ContractDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/accesses/list:
+    post:
+      tags:
+        - contract
+      summary: "Доступы к счету"
+      requestBody:
+        $ref: './crm/contract.yaml#/components/requestBodies/AccessSearchRequest'
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/AccessesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/accesses/add:
+    post:
+      tags:
+        - contract
+      summary: "Добавление доступов к счету по электронным адресам"
+      requestBody:
+        $ref: './crm/contract.yaml#/components/requestBodies/AccessAddRequest'
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/WorkWithAccessesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/accesses/copy:
+    post:
+      tags:
+        - contract
+      summary: "Копирование доступов к счету с другого счета"
+      requestBody:
+        $ref: './crm/contract.yaml#/components/requestBodies/AccessCopyRequest'
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/WorkWithAccessesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/accesses/move:
+    post:
+      tags:
+        - contract
+      summary: "Перемещение доступа"
+      requestBody:
+        $ref: './crm/contract.yaml#/components/requestBodies/AccessMoveRequest'
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/AccessesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/accesses/set-active:
+    post:
+      tags:
+        - contract
+      summary: "Установка и снятия признака активности доступа"
+      requestBody:
+        $ref: './crm/contract.yaml#/components/requestBodies/AccessSetActiveRequest'
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/AccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /contracts/accesses/set-deleted:
+    post:
+      tags:
+        - contract
+      summary: "Установка и снятия признака, что доступ удален"
+      requestBody:
+        $ref: './crm/contract.yaml#/components/requestBodies/AccessSetDeletedRequest'
+      responses:
+        200:
+          $ref: './crm/contract.yaml#/components/responses/AccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'

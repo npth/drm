@@ -1,0 +1,161 @@
+openapi: 3.1.0
+info:
+  title: "География"
+  description: "<a href=\"/documentation/index.html?entry=/api/index.yaml\">Главная</a>"
+  version: 1.0.0
+servers:
+  - url: '/api/geography'
+security:
+  - bearerAuth: []
+tags:
+  - name: region
+    description: "Регионы"
+  - name: macroregion
+    description: "Макрорегионы"
+  - name: district
+    description: "Районы"
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: './common.yaml#/components/securitySchemes/bearerAuth'
+paths:
+  /regions/list:
+    get:
+      tags:
+        - region
+      summary: "Регионы"
+      responses:
+        200:
+          $ref: './geography/region.yaml#/components/responses/RegionsListResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /regions/insert:
+    post:
+      tags:
+        - region
+      summary: "Добавление региона"
+      requestBody:
+        $ref: './geography/region.yaml#/components/requestBodies/RegionInsertRequest'
+      responses:
+        200:
+          $ref: './geography/region.yaml#/components/responses/RegionResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /regions/update:
+    put:
+      tags:
+        - region
+      summary: "Обновление региона"
+      requestBody:
+        $ref: './geography/region.yaml#/components/requestBodies/RegionUpdateRequest'
+      responses:
+        200:
+          $ref: './geography/region.yaml#/components/responses/RegionResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /regions/delete:
+    delete:
+      tags:
+        - region
+      summary: "Удаление региона"
+      requestBody:
+        $ref: './geography/region.yaml#/components/requestBodies/RegionDeleteRequest'
+      responses:
+        204:
+          $ref: './common.yaml#/components/responses/EmptyResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /macroregions/list:
+    get:
+      tags:
+        - macroregion
+      summary: "Список макрорегионов"
+      responses:
+        200:
+          $ref: './geography/macroregion.yaml#/components/responses/MacroRegionsListResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /macroregions/insert:
+    post:
+      tags:
+        - macroregion
+      summary: "Добавление макрорегиона"
+      requestBody:
+        $ref: './geography/macroregion.yaml#/components/requestBodies/MacroRegionInsertRequest'
+      responses:
+        200:
+          $ref: './geography/macroregion.yaml#/components/responses/MacroRegionResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /macroregions/update:
+    put:
+      tags:
+        - macroregion
+      summary: "Обновление макрорегиона"
+      requestBody:
+        $ref: './geography/macroregion.yaml#/components/requestBodies/MacroRegionUpdateRequest'
+      responses:
+        200:
+          $ref: './geography/macroregion.yaml#/components/responses/MacroRegionResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /macroregions/delete:
+    delete:
+      tags:
+        - macroregion
+      summary: "Удаление макрорегиона"
+      requestBody:
+        $ref: './geography/macroregion.yaml#/components/requestBodies/MacroRegionDeleteRequest'
+      responses:
+        204:
+          $ref: './common.yaml#/components/responses/EmptyResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /districts/list:
+    get:
+      tags:
+        - district
+      summary: "Районы"
+      responses:
+        200:
+          $ref: './geography/district.yaml#/components/responses/DistrictsListResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /districts/insert:
+    post:
+      tags:
+        - district
+      summary: "Добавление района"
+      requestBody:
+        $ref: './geography/district.yaml#/components/requestBodies/DistrictInsertRequest'
+      responses:
+        200:
+          $ref: './geography/district.yaml#/components/responses/DistrictResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /districts/update:
+    put:
+      tags:
+        - district
+      summary: "Обновление района"
+      requestBody:
+        $ref: './geography/district.yaml#/components/requestBodies/DistrictUpdateRequest'
+      responses:
+        200:
+          $ref: './geography/district.yaml#/components/responses/DistrictResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /districts/delete:
+    delete:
+      tags:
+        - district
+      summary: "Удаление района"
+      requestBody:
+        $ref: './geography/district.yaml#/components/requestBodies/DistrictDeleteRequest'
+      responses:
+        204:
+          $ref: './common.yaml#/components/responses/EmptyResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'

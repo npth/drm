@@ -1,0 +1,124 @@
+openapi: 3.1.0
+info:
+  title: "Объявления по недвижимости"
+  description: "<a href=\"/documentation/index.html?entry=/api/index.yaml\">Главная</a>"
+  version: 1.0.0
+servers:
+  - url: '/api/realty'
+security:
+  - bearerAuth: []
+tags:
+  - name: items
+    description: "Справочники"
+  - name: notice
+    description: "Объявления"
+  - name: order
+    description: "Заявки"
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: './common.yaml#/components/securitySchemes/bearerAuth'
+paths:
+  /items/operations/list:
+    get:
+      tags:
+        - items
+      summary: "Операции"
+      responses:
+        200:
+          $ref: './realty/items.yaml#/components/responses/OperationsResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /items/notices/types/list:
+    get:
+      tags:
+        - items
+      summary: "Типы недвижимости"
+      responses:
+        200:
+          $ref: './realty/items.yaml#/components/responses/NoticeTypesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /items/notices/types/insert:
+    post:
+      tags:
+        - items
+      summary: "Добавление нового типа недвижимости"
+      requestBody:
+        $ref: './realty/items.yaml#/components/requestBodies/NoticeTypeInsertRequest'
+      responses:
+        200:
+          $ref: './realty/items.yaml#/components/responses/NoticeTypeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /items/notices/types/update:
+    put:
+      tags:
+        - items
+      summary: "Обновление типа недвижимости"
+      requestBody:
+        $ref: './realty/items.yaml#/components/requestBodies/NoticeTypeUpdateRequest'
+      responses:
+        200:
+          $ref: './realty/items.yaml#/components/responses/NoticeTypeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /items/notices/types/delete:
+    delete:
+      tags:
+        - items
+      summary: "Удаление типа недвижимости"
+      requestBody:
+        $ref: './realty/items.yaml#/components/requestBodies/NoticeTypeDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /notices/list:
+    get:
+      tags:
+        - notice
+      summary: "Объявления"
+      responses:
+        200:
+          $ref: './realty/notice.yaml#/components/responses/NoticesListResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /notices/insert:
+    post:
+      tags:
+        - notice
+      summary: "Добавление нового объявления"
+      requestBody:
+        $ref: './realty/notice.yaml#/components/requestBodies/NoticeInsertRequest'
+      responses:
+        200:
+          $ref: './realty/notice.yaml#/components/responses/NoticeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /notices/update:
+    put:
+      tags:
+        - notice
+      summary: "Обновление объявления"
+      requestBody:
+        $ref: './realty/notice.yaml#/components/requestBodies/NoticeUpdateRequest'
+      responses:
+        200:
+          $ref: './realty/notice.yaml#/components/responses/NoticeResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /notices/delete:
+    delete:
+      tags:
+        - notice
+      summary: "Удаление объявления"
+      requestBody:
+        $ref: './realty/notice.yaml#/components/requestBodies/NoticeDeleteRequest'
+      responses:
+        200:
+          $ref: './common.yaml#/components/responses/SuccessResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'

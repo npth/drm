@@ -1,0 +1,976 @@
+openapi: 3.1.0
+info:
+  title: "Тарифы"
+  description: "Тарифы"
+  version: 1.0.0
+components:
+  schemas:
+    TariffId:
+      type: integer
+      description: "Код тарифа"
+      example: 12
+    Price:
+      type: integer
+      description: "Цена"
+      example: 1500
+    SummaryDiscount:
+      type: [integer, "null"]
+      nullable: true
+      description: "Скидка по акциям"
+      example: 150
+    BonusDiscount:
+      type: [integer, "null"]
+      nullable: true
+      description: "Скидка бонусами"
+      example: 110
+    Cost:
+      type: integer
+      description: "Стоимость, цена с учетом скидок"
+      example: 1240
+    Days:
+      type: integer
+      description: "Количество дней"
+      example: 60
+    Percent:
+      type: integer
+      description: "Скидка в %"
+      example: 10
+    DiscountId:
+      type: [integer, "null"]
+      nullable: true
+      description: "Код скидки"
+      example: 1
+    Ordnum:
+      type: integer
+      description: "Порядковый номер"
+      example: 1
+    ExchangeId:
+      type: [integer, "null"]
+      nullable: true
+      description: "Код тарифа на обмен"
+      example: 1
+    ExchangeName:
+      type: string
+      description: "Наименование тарифа на обмен"
+      example: "Для агентства"
+    ExchangeNote:
+      type: [string, "null"]
+      nullable: true
+      description: "Примечание для менеджера"
+      example: "Тарифы на отредактированные объявления со скидкой 10%"
+    GroupId:
+      type: integer
+      description: "Код линейки тарифов"
+      example: 1
+    GroupName:
+      type: string
+      description: "Наименование линейки тарифов"
+      example: "Ограничения пользователей"
+    GroupNote:
+      type: string
+      nullable: true
+      description: "Примечание для менеджера"
+      example: "Количество каналов = количество пользователей"
+    DistrictDiscountName:
+      type: string
+      description: "Наименование скидки по районам"
+      example: "Анапа и Новороссийск"
+    DistrictDiscountDescription:
+      type: string
+      nullable: true
+      description: "Описание скидки по районам"
+      example: "Акция только для риелторов Анапы и Новороссийска. Скидка - 20% применяется дополнительно к итоговой сумме. Вы можете оплатить на любой выбранный срок (от 30 до 180 дней). Для доступа к информации в других районах, используйте счета без акции"
+    PromoCodeId:
+      type: integer
+      description: "Код промокода"
+      example: 1
+    PromoCodes:
+      type: array
+      items:
+        type: string
+      description: "Список вариантов промокодов"
+      example: [ "честнаяреклама","честная реклама" ]
+    ClientEmails:
+      type: [array, "null"]
+      nullable: true
+      items:
+        $ref: './client.yaml#/components/schemas/Email'
+      description: "Список электронных адресов клиентов"
+      example: [ "test1@test.ru","test2@test.ru" ]
+    StartedAt:
+      type: [string, "null"]
+      format: datetime
+      nullable: true
+      description: "Начало действия промокода"
+      example: "2026-04-01T18:26:05.000000Z"
+    FinishedAt:
+      type: [string, "null"]
+      format: datetime
+      nullable: true
+      description: "Конец действия промокода"
+      example: "2026-05-31T18:26:05.000000Z"
+    UsageLimit:
+      type: string
+      description: "Как часто может быть применен промокод клиентом first, once, unlim"
+      example: "first"
+    FirstLimit:
+      type: [integer, "null"]
+      nullable: true
+      description: "Количество промокодов для всех клиентов"
+      example: 3
+    DiscountType:
+      type: string
+      description: "Тип скидки percent, fixed"
+      example: "percent"
+    DiscountValue:
+      type: integer
+      description: "Размер скидки в процентах или рублях"
+      example: 10
+    PromoCodeNote:
+      type: [string, "null"]
+      nullable: true
+      description: "Примечание"
+      example: "Для первых 3 клиентов"
+
+    ConfirmedInsertPrice:
+      type: number
+      description: "цена получения подтвержденного объявления"
+      example: 3.05
+    ConfirmedUpdatePrice:
+      type: number
+      description: "цена обновления подтвержденного объявления"
+      example: 3.05
+    ConfirmedDeletePrice:
+      type: number
+      description: "цена удаления подтвержденного объявления"
+      example: 3.05
+    ConfirmedInitialPrice:
+      type: number
+      description: "цена получения подтвержденного объявления при первичной загрузке"
+      example: 3.05
+    LoadedInsertPrice:
+      type: number
+      description: "цена получения загруженного объявления"
+      example: 3.05
+    LoadedUpdatePrice:
+      type: number
+      description: "цена обновления загруженного объявления"
+      example: 3.05
+    LoadedDeletePrice:
+      type: number
+      description: "цена удаления загруженного объявления"
+      example: 3.05
+    LoadedInitialPrice:
+      type: number
+      description: "цена получения загруженного объявления при первичной загрузке"
+      example: 3.05
+    InitialCount:
+      type: integer
+      description: "количество объявлений при первичной загрузке"
+      example: 20000
+    EditedInsertPrice:
+      type: number
+      description: "цена получения отредактированного объявления"
+      example: 3.05
+    EditedUpdatePrice:
+      type: number
+      description: "цена обновления отредактированного объявления"
+      example: 3.05
+    EditedDeletePrice:
+      type: number
+      description: "цена удаления отредактированного объявления"
+      example: 3.05
+    EditedInitialPrice:
+      type: number
+      description: "цена получения отредактированного объявления при первичной загрузке"
+      example: 3.05
+
+    Group:
+      type: object
+      description: "Линейка тарифов"
+      properties:
+        id:
+          $ref: "#/components/schemas/GroupId"
+        contract_type_id:
+          $ref: "./contract.yaml#/components/schemas/TypeId"
+        name:
+          $ref: "#/components/schemas/GroupName"
+        required_limits:
+          $ref: "./contract.yaml#/components/schemas/RequiredLimits"
+        default_limits:
+          $ref: "./contract.yaml#/components/schemas/Limits"
+        note:
+          $ref: "#/components/schemas/GroupNote"
+
+    GroupInsert:
+      type: object
+      description: "Добавление типа счета"
+      properties:
+        contract_type_id:
+          $ref: "./contract.yaml#/components/schemas/TypeId"
+        name:
+          $ref: "#/components/schemas/GroupName"
+        required_limits:
+          $ref: "./contract.yaml#/components/schemas/RequiredLimits"
+        default_limits:
+          $ref: "./contract.yaml#/components/schemas/Limits"
+        note:
+          $ref: "#/components/schemas/GroupNote"
+      required:
+        - contract_type_id
+        - name
+        - required_limits
+
+    GroupUpdate:
+      type: object
+      description: "Обновление типа счета"
+      properties:
+        id:
+          $ref: "#/components/schemas/GroupId"
+        contract_type_id:
+          $ref: "./contract.yaml#/components/schemas/TypeId"
+        name:
+          $ref: "#/components/schemas/GroupName"
+        required_limits:
+          $ref: "./contract.yaml#/components/schemas/RequiredLimits"
+        default_limits:
+          $ref: "./contract.yaml#/components/schemas/Limits"
+        note:
+          $ref: "#/components/schemas/GroupNote"
+      required:
+        - id
+        - contract_type_id
+        - name
+        - required_limits
+
+    GroupDelete:
+      type: object
+      description: "Удаление типа счета"
+      properties:
+        id:
+          $ref: "#/components/schemas/GroupId"
+      required:
+        - id
+
+    Tariff:
+      type: object
+      description: "Тариф"
+      properties:
+        id:
+          $ref: "#/components/schemas/TariffId"
+        contract_type_id:
+          $ref: "./contract.yaml#/components/schemas/TypeId"
+        tariff_group_id:
+          $ref: "#/components/schemas/GroupId"
+        limits:
+          $ref: "./contract.yaml#/components/schemas/Limits"
+        price:
+          $ref: "#/components/schemas/Price"
+
+    TariffInsert:
+      type: object
+      description: "Добавление типа счета"
+      properties:
+        contract_type_id:
+          $ref: "./contract.yaml#/components/schemas/TypeId"
+        tariff_group_id:
+          $ref: "#/components/schemas/GroupId"
+        limits:
+          $ref: "./contract.yaml#/components/schemas/Limits"
+        price:
+          $ref: "#/components/schemas/Price"
+      required:
+        - contract_type_id
+        - name
+        - limits
+        - price
+
+    TariffUpdate:
+      type: object
+      description: "Обновление типа счета"
+      properties:
+        id:
+          $ref: "#/components/schemas/TariffId"
+        contract_type_id:
+          $ref: "./contract.yaml#/components/schemas/TypeId"
+        tariff_group_id:
+          $ref: "#/components/schemas/GroupId"
+        limits:
+          $ref: "./contract.yaml#/components/schemas/Limits"
+        price:
+          $ref: "#/components/schemas/Price"
+      required:
+        - id
+        - contract_type_id
+        - name
+        - limits
+        - price
+
+    TariffDelete:
+      type: object
+      description: "Удаление типа счета"
+      properties:
+        id:
+          $ref: "#/components/schemas/TariffId"
+      required:
+        - id
+
+    Discount:
+      type: object
+      description: "Скидки за период"
+      properties:
+        id:
+          $ref: "#/components/schemas/DiscountId"
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        days:
+          $ref: "#/components/schemas/Days"
+        percent:
+          $ref: "#/components/schemas/Percent"
+
+    DiscountInsert:
+      type: object
+      description: "Добавление скидки"
+      properties:
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        days:
+          $ref: "#/components/schemas/Days"
+        percent:
+          $ref: "#/components/schemas/Percent"
+      required:
+        - macroregion_id
+        - days
+        - percent
+
+    DiscountUpdate:
+      type: object
+      description: "Обновление скидки"
+      properties:
+        id:
+          $ref: "#/components/schemas/DiscountId"
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        days:
+          $ref: "#/components/schemas/Days"
+        percent:
+          $ref: "#/components/schemas/Percent"
+      required:
+        - id
+        - macroregion_id
+        - days
+        - percent
+
+    DiscountDelete:
+      type: object
+      description: "Удаление скидки"
+      properties:
+        id:
+          $ref: "#/components/schemas/DiscountId"
+      required:
+        - id
+
+    DistrictDiscount:
+      type: object
+      description: "Скидки по районам"
+      properties:
+        id:
+          $ref: "#/components/schemas/DiscountId"
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/DistrictDiscountName"
+        description:
+          $ref: "#/components/schemas/DistrictDiscountDescription"
+        district_ids:
+          $ref: "./contract.yaml#/components/schemas/DistrictIds"
+        percent:
+          $ref: "#/components/schemas/Percent"
+
+    DistrictDiscountInsert:
+      type: object
+      description: "Добавление скидки"
+      properties:
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/DistrictDiscountName"
+        description:
+          $ref: "#/components/schemas/DistrictDiscountDescription"
+        district_ids:
+          $ref: "./contract.yaml#/components/schemas/DistrictIds"
+        percent:
+          $ref: "#/components/schemas/Percent"
+      required:
+        - macroregion_id
+        - ordnum
+        - name
+        - description
+        - percent
+
+    DistrictDiscountUpdate:
+      type: object
+      description: "Обновление скидки"
+      properties:
+        id:
+          $ref: "#/components/schemas/DiscountId"
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/DistrictDiscountName"
+        description:
+          $ref: "#/components/schemas/DistrictDiscountDescription"
+        district_ids:
+          $ref: "./contract.yaml#/components/schemas/DistrictIds"
+        percent:
+          $ref: "#/components/schemas/Percent"
+      required:
+        - id
+        - macroregion_id
+        - ordnum
+        - name
+        - description
+        - percent
+
+    DistrictDiscountDelete:
+      type: object
+      description: "Удаление скидки"
+      properties:
+        id:
+          $ref: "#/components/schemas/DiscountId"
+      required:
+        - id
+
+    PromoCode:
+      type: object
+      description: "Промокоды"
+      properties:
+        id:
+          $ref: "#/components/schemas/PromoCodeId"
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        name:
+          $ref: "#/components/schemas/DistrictDiscountName"
+        codes:
+          $ref: "#/components/schemas/PromoCodes"
+        client_emails:
+          $ref: "#/components/schemas/ClientEmails"
+        started_at:
+          $ref: "#/components/schemas/StartedAt"
+        finished_at:
+          $ref: "#/components/schemas/FinishedAt"
+        usage_limit:
+          $ref: "#/components/schemas/UsageLimit"
+        first_limit:
+          $ref: "#/components/schemas/FirstLimit"
+        discount_type:
+          $ref: "#/components/schemas/DiscountType"
+        discount_value:
+          $ref: "#/components/schemas/DiscountValue"
+        note:
+          $ref: "#/components/schemas/PromoCodeNote"
+
+    PromoCodeInsert:
+      type: object
+      description: "Добавление промокода"
+      properties:
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        name:
+          $ref: "#/components/schemas/DistrictDiscountName"
+        codes:
+          $ref: "#/components/schemas/PromoCodes"
+        client_emails:
+          $ref: "#/components/schemas/ClientEmails"
+        started_at:
+          $ref: "#/components/schemas/StartedAt"
+        finished_at:
+          $ref: "#/components/schemas/FinishedAt"
+        usage_limit:
+          $ref: "#/components/schemas/UsageLimit"
+        first_limit:
+          $ref: "#/components/schemas/FirstLimit"
+        discount_type:
+          $ref: "#/components/schemas/DiscountType"
+        discount_value:
+          $ref: "#/components/schemas/DiscountValue"
+        note:
+          $ref: "#/components/schemas/PromoCodeNote"
+      required:
+        - macroregion_id
+        - name
+        - codes
+        - discount_type
+        - discount_value
+
+    PromoCodeUpdate:
+      type: object
+      description: "Обновление промокода"
+      properties:
+        id:
+          $ref: "#/components/schemas/DiscountId"
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        name:
+          $ref: "#/components/schemas/DistrictDiscountName"
+        codes:
+          $ref: "#/components/schemas/PromoCodes"
+        client_emails:
+          $ref: "#/components/schemas/ClientEmails"
+        started_at:
+          $ref: "#/components/schemas/StartedAt"
+        finished_at:
+          $ref: "#/components/schemas/FinishedAt"
+        usage_limit:
+          $ref: "#/components/schemas/UsageLimit"
+        first_limit:
+          $ref: "#/components/schemas/FirstLimit"
+        discount_type:
+          $ref: "#/components/schemas/DiscountType"
+        discount_value:
+          $ref: "#/components/schemas/DiscountValue"
+        note:
+          $ref: "#/components/schemas/PromoCodeNote"
+      required:
+        - id
+        - macroregion_id
+        - name
+        - codes
+        - discount_type
+        - discount_value
+
+    PromoCodeDelete:
+      type: object
+      description: "Удаление промокода"
+      properties:
+        id:
+          $ref: "#/components/schemas/DiscountId"
+      required:
+        - id
+
+    Exchange:
+      type: object
+      description: "Тариф на обмен"
+      properties:
+        id:
+          $ref: "#/components/schemas/ExchangeId"
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        name:
+          $ref: "#/components/schemas/ExchangeName"
+        note:
+          $ref: "#/components/schemas/ExchangeNote"
+        confirmed_insert_price:
+          $ref: "#/components/schemas/ConfirmedInsertPrice"
+        confirmed_update_price:
+          $ref: "#/components/schemas/ConfirmedUpdatePrice"
+        confirmed_delete_price:
+          $ref: "#/components/schemas/ConfirmedDeletePrice"
+        confirmed_initial_price:
+          $ref: "#/components/schemas/ConfirmedInitialPrice"
+        edited_insert_price:
+          $ref: "#/components/schemas/EditedInsertPrice"
+        edited_update_price:
+          $ref: "#/components/schemas/EditedUpdatePrice"
+        edited_delete_price:
+          $ref: "#/components/schemas/EditedDeletePrice"
+        edited_initial_price:
+          $ref: "#/components/schemas/EditedInitialPrice"
+        loaded_insert_price:
+          $ref: "#/components/schemas/LoadedInsertPrice"
+        loaded_update_price:
+          $ref: "#/components/schemas/LoadedUpdatePrice"
+        loaded_delete_price:
+          $ref: "#/components/schemas/LoadedDeletePrice"
+        loaded_initial_price:
+          $ref: "#/components/schemas/LoadedInitialPrice"
+        initial_count:
+          $ref: "#/components/schemas/InitialCount"
+
+    ExchangeInsert:
+      type: object
+      description: "Добавление тарифа на обмен"
+      properties:
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        name:
+          $ref: "#/components/schemas/ExchangeName"
+        note:
+          $ref: "#/components/schemas/ExchangeNote"
+        confirmed_insert_price:
+          $ref: "#/components/schemas/ConfirmedInsertPrice"
+        confirmed_update_price:
+          $ref: "#/components/schemas/ConfirmedUpdatePrice"
+        confirmed_delete_price:
+          $ref: "#/components/schemas/ConfirmedDeletePrice"
+        confirmed_initial_price:
+          $ref: "#/components/schemas/ConfirmedInitialPrice"
+        edited_insert_price:
+          $ref: "#/components/schemas/EditedInsertPrice"
+        edited_update_price:
+          $ref: "#/components/schemas/EditedUpdatePrice"
+        edited_delete_price:
+          $ref: "#/components/schemas/EditedDeletePrice"
+        edited_initial_price:
+          $ref: "#/components/schemas/EditedInitialPrice"
+        loaded_insert_price:
+          $ref: "#/components/schemas/LoadedInsertPrice"
+        loaded_update_price:
+          $ref: "#/components/schemas/LoadedUpdatePrice"
+        loaded_delete_price:
+          $ref: "#/components/schemas/LoadedDeletePrice"
+        loaded_initial_price:
+          $ref: "#/components/schemas/LoadedInitialPrice"
+        initial_count:
+          $ref: "#/components/schemas/InitialCount"
+      required:
+        - macroregion_id
+        - name
+        - confirmed_insert_price
+        - confirmed_update_price
+        - confirmed_delete_price
+        - confirmed_initial_price
+        - edited_insert_price
+        - edited_update_price
+        - edited_delete_price
+        - edited_initial_price
+        - loaded_insert_price
+        - loaded_update_price
+        - loaded_delete_price
+        - loaded_initial_price
+        - initial_count
+
+    ExchangeUpdate:
+      type: object
+      description: "Обновление тарифа на обмен"
+      properties:
+        id:
+          $ref: "#/components/schemas/ExchangeId"
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        name:
+          $ref: "#/components/schemas/ExchangeName"
+        note:
+          $ref: "#/components/schemas/ExchangeNote"
+        confirmed_insert_price:
+          $ref: "#/components/schemas/ConfirmedInsertPrice"
+        confirmed_update_price:
+          $ref: "#/components/schemas/ConfirmedUpdatePrice"
+        confirmed_delete_price:
+          $ref: "#/components/schemas/ConfirmedDeletePrice"
+        confirmed_initial_price:
+          $ref: "#/components/schemas/ConfirmedInitialPrice"
+        edited_insert_price:
+          $ref: "#/components/schemas/EditedInsertPrice"
+        edited_update_price:
+          $ref: "#/components/schemas/EditedUpdatePrice"
+        edited_delete_price:
+          $ref: "#/components/schemas/EditedDeletePrice"
+        edited_initial_price:
+          $ref: "#/components/schemas/EditedInitialPrice"
+        loaded_insert_price:
+          $ref: "#/components/schemas/LoadedInsertPrice"
+        loaded_update_price:
+          $ref: "#/components/schemas/LoadedUpdatePrice"
+        loaded_delete_price:
+          $ref: "#/components/schemas/LoadedDeletePrice"
+        loaded_initial_price:
+          $ref: "#/components/schemas/LoadedInitialPrice"
+        initial_count:
+          $ref: "#/components/schemas/InitialCount"
+      required:
+        - id
+        - macroregion_id
+        - name
+        - confirmed_insert_price
+        - confirmed_update_price
+        - confirmed_delete_price
+        - confirmed_initial_price
+        - edited_insert_price
+        - edited_update_price
+        - edited_delete_price
+        - edited_initial_price
+        - loaded_insert_price
+        - loaded_update_price
+        - loaded_delete_price
+        - loaded_initial_price
+        - initial_count
+
+
+    ExchangeDelete:
+      type: object
+      description: "Удаление тарифа"
+      properties:
+        id:
+          $ref: "#/components/schemas/DiscountId"
+      required:
+        - id
+
+  requestBodies:
+
+    GroupInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GroupInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/GroupInsert'
+    GroupUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GroupUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/GroupUpdate'
+    GroupDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GroupDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/GroupDelete'
+
+
+    TariffInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TariffInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/TariffInsert'
+    TariffUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TariffUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/TariffUpdate'
+    TariffDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TariffDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/TariffDelete'
+
+    DiscountInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DiscountInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/DiscountInsert'
+    DiscountUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DiscountUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/DiscountUpdate'
+    DiscountDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DiscountDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/DiscountDelete'
+
+    DistrictDiscountInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DistrictDiscountInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/DistrictDiscountInsert'
+    DistrictDiscountUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DistrictDiscountUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/DistrictDiscountUpdate'
+    DistrictDiscountDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DistrictDiscountDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/DistrictDiscountDelete'
+
+    PromoCodeInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PromoCodeInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/PromoCodeInsert'
+    PromoCodeUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PromoCodeUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/PromoCodeUpdate'
+    PromoCodeDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PromoCodeDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/PromoCodeDelete'
+
+    ExchangeInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExchangeInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ExchangeInsert'
+    ExchangeUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExchangeUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ExchangeUpdate'
+    ExchangeDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExchangeDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ExchangeDelete'
+
+  responses:
+    GroupResponse:
+      description: "Линейка тарифов"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Group'
+    GroupsResponse:
+      description: "Линейки тарифов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Линейки тарифов"
+                items:
+                  $ref: '#/components/schemas/Group'
+    TariffResponse:
+      description: "Тариф"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Tariff'
+    TariffsResponse:
+      description: "Тарифы"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Тарифы"
+                items:
+                  $ref: '#/components/schemas/Tariff'
+    DiscountResponse:
+      description: "Скидка за период"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Discount'
+    DiscountsResponse:
+      description: "Скидки за периоды"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Скидки за периоды"
+                items:
+                  $ref: '#/components/schemas/Discount'
+    DistrictDiscountResponse:
+      description: "Скидка по районам"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DistrictDiscount'
+    DistrictDiscountsResponse:
+      description: "Скидки по районам"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Скидки по районам"
+                items:
+                  $ref: '#/components/schemas/DistrictDiscount'
+    PromoCodeResponse:
+      description: "Промокод"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PromoCode'
+    PromoCodesResponse:
+      description: "Промокоды"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Промокоды"
+                items:
+                  $ref: '#/components/schemas/PromoCode'
+    ExchangeResponse:
+      description: "Тариф на обмен"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Exchange'
+    ExchangesResponse:
+      description: "Тарифы на обмен"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Тариф на обмен"
+                items:
+                  $ref: '#/components/schemas/Exchange'

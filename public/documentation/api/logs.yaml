@@ -1,0 +1,76 @@
+openapi: 3.1.0
+info:
+  title: "Журнал действий"
+  description: "<a href=\"/documentation/index.html?entry=/api/index.yaml\">Главная</a>"
+  version: 1.0.0
+servers:
+  - url: '/api'
+security:
+  - bearerAuth: []
+tags:
+  - name: view
+    description: "Состояние"
+  - name: logs
+    description: "Журнал действий"
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: './common.yaml#/components/securitySchemes/bearerAuth'
+paths:
+  /views/insert:
+    post:
+      tags:
+        - view
+      summary: "Сохранение конфигурации"
+      requestBody:
+        $ref: './logs/view.yaml#/components/requestBodies/ViewInsertRequest'
+      responses:
+        200:
+          $ref: './logs/view.yaml#/components/responses/ViewInsertResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /views/get:
+    get:
+      tags:
+        - view
+      summary: "Получение конфигурации"
+      parameters:
+        - $ref: './logs/view.yaml#/components/parameters/ViewIdParam'
+      responses:
+        200:
+          $ref: './logs/view.yaml#/components/responses/ViewResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+
+  /logs/entities:
+    get:
+      tags:
+        - logs
+      summary: "Справочник сущностей"
+      responses:
+        200:
+          $ref: './logs/logs.yaml#/components/responses/EntitiesResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /logs/actions:
+    get:
+      tags:
+        - logs
+      summary: "Справочник действий"
+      responses:
+        200:
+          $ref: './logs/logs.yaml#/components/responses/ActionsResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /logs/list:
+    post:
+      tags:
+        - logs
+      summary: "Журнал действий"
+      requestBody:
+        $ref: './logs/logs.yaml#/components/requestBodies/LogsRequest'
+      responses:
+        200:
+          $ref: './logs/logs.yaml#/components/responses/LogsResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'

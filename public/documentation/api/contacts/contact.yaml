@@ -1,0 +1,169 @@
+openapi: 3.1.0
+info:
+  title: "Роли"
+  description: "Роли"
+  version: 1.0.0
+components:
+  schemas:
+    ContactId:
+      type: int
+      description: "ID контакта"
+      example: 123
+    PhoneRaw:
+      type: string
+      description: "Телефон пользователя"
+      example: "9181234567"
+    Phone:
+      type: string
+      description: "Телефон пользователя"
+      example: "+7 (918) 123-45-67"
+    IsMain:
+      type: boolean
+      description: "Основной номер"
+      example: true
+    HasCall:
+      type: boolean
+      description: "Номер телефона поддерживает звонки"
+      example: true
+    HasSms:
+      type: boolean
+      description: "Номер телефона поддерживает смс"
+      example: true
+    HasTelegram:
+      type: boolean
+      description: "Номер телефона поддерживает Telegram"
+      example: false
+    HasWhatsapp:
+      type: boolean
+      description: "Номер телефона поддерживает Whatsapp"
+      example: false
+    HasMax:
+      type: boolean
+      description: "Номер телефона поддерживает Max"
+      example: false
+    Contact:
+      type: object
+      description: "Контакт"
+      properties:
+        id:
+          $ref: "#/components/schemas/ContactId"
+        phone:
+          $ref: "#/components/schemas/Phone"
+        has_call:
+          $ref: "#/components/schemas/HasCall"
+        has_sms:
+          $ref: "#/components/schemas/HasSms"
+        has_telegram:
+          $ref: "#/components/schemas/HasTelegram"
+        has_whatsapp:
+          $ref: "#/components/schemas/HasWhatsapp"
+        has_max:
+          $ref: "#/components/schemas/HasMax"
+        created_at:
+          $ref: "./../common/components.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "./../common/components.yaml#/components/schemas/UpdatedAt"
+    ContactInsert:
+      type: object
+      description: "Контакт"
+      properties:
+        phone:
+          $ref: "#/components/schemas/Phone"
+        has_call:
+          $ref: "#/components/schemas/HasCall"
+        has_sms:
+          $ref: "#/components/schemas/HasSms"
+        has_telegram:
+          $ref: "#/components/schemas/HasTelegram"
+        has_whatsapp:
+          $ref: "#/components/schemas/HasWhatsapp"
+        has_max:
+          $ref: "#/components/schemas/HasMax"
+      required:
+        - phone
+    ContactUpdate:
+      type: object
+      description: "Контакт"
+      properties:
+        id:
+          $ref: "#/components/schemas/ContactId"
+        phone:
+          $ref: "#/components/schemas/Phone"
+        has_call:
+          $ref: "#/components/schemas/HasCall"
+        has_sms:
+          $ref: "#/components/schemas/HasSms"
+        has_telegram:
+          $ref: "#/components/schemas/HasTelegram"
+        has_whatsapp:
+          $ref: "#/components/schemas/HasWhatsapp"
+        has_max:
+          $ref: "#/components/schemas/HasMax"
+      required:
+        - id
+        - phone
+    ContactDelete:
+      type: object
+      description: "Удаление контакта"
+      properties:
+        id:
+          $ref: "#/components/schemas/ContactId"
+      required:
+        - id
+    Contacts:
+      type: array
+      items:
+        $ref: '#/components/schemas/Contact'
+  parameters:
+    PhoneParam:
+      in: query
+      name: phone
+      required: true
+      description: "Телефон"
+      schema:
+        $ref: '#/components/schemas/Phone'
+
+  requestBodies:
+    ContactInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ContactInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ContactInsert'
+    ContactUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ContactUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ContactUpdate'
+    ContactDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ContactDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ContactDelete'
+
+  responses:
+    ContactResponse:
+      description: "Контакт"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Contact'
+    ContactsListResponse:
+      description: "Список контактов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Contacts'
+              meta:
+                $ref: './../common/filters.yaml#/components/schemas/MetaPage'

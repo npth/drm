@@ -1,0 +1,123 @@
+openapi: 3.1.0
+info:
+  title: "Роли"
+  description: "Роли"
+  version: 1.0.0
+components:
+  schemas:
+    RoleId:
+      type: integer
+      description: "Код роли"
+      example: 123
+    Name:
+      type: string
+      description: "Наименование"
+      example: "Старший менеджер"
+    Note:
+      type: string
+      nullable: true
+      description: "Примечание"
+      example: "включает в себя все права старшего менеджера"
+
+    Role:
+      type: object
+      description: "Роль"
+      properties:
+        id:
+          $ref: "#/components/schemas/RoleId"
+        name:
+          $ref: "#/components/schemas/Name"
+        note:
+          $ref: "#/components/schemas/Note"
+    RoleIdName:
+      type: object
+      description: "Роль"
+      properties:
+        id:
+          $ref: "#/components/schemas/RoleId"
+        name:
+          $ref: "#/components/schemas/Name"
+
+    RoleCreate:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/Name'
+        note:
+          $ref: '#/components/schemas/Note'
+      required:
+        - name
+
+    RoleUpdate:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/RoleId'
+        name:
+          $ref: '#/components/schemas/Name'
+        note:
+          $ref: "#/components/schemas/Note"
+      required:
+        - id
+        - name
+
+    RoleDelete:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/RoleId'
+      required:
+        - id
+  parameters:
+    RoleIdParam:
+      in: query
+      name: role_id
+      required: true
+      description: "Код роли"
+      schema:
+        $ref: '#/components/schemas/RoleId'
+
+  requestBodies:
+    RoleInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RoleCreate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/RoleCreate'
+    RoleUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RoleUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/RoleUpdate'
+    RoleDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RoleDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/RoleDelete'
+
+  responses:
+    RoleResponse:
+      description: "Клиент"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Role'
+    RolesListResponse:
+      description: "Список клиентов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'

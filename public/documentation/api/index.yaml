@@ -1,0 +1,129 @@
+openapi: 3.0.3
+info:
+  title: Система управления Делаем Сделки
+  description: "
+ 🕒 <a href=\"/documentation/index.html?entry=/api/crm.yaml\">СРМ</a> <br/>
+ 🕒 <a href=\"/documentation/index.html?entry=/api/access.yaml\">Права доступа</a> <br/>
+ 🕒 <a href=\"/documentation/index.html?entry=/api/contacts.yaml\">Контакты</a> <br/>
+ 🕒 <a href=\"/documentation/index.html?entry=/api/geography.yaml\">География</a> <br/>
+ 🕒 <a href=\"/documentation/index.html?entry=/api/realty.yaml\">Объявления</a> <br/>
+ 🕒 <a href=\"/documentation/index.html?entry=/api/logs.yaml\">Журнал действий</a> <br/>
+  "
+  version: 1.0.0
+servers:
+  - url: '/api/'
+security:
+  - bearerAuth: []
+tags:
+  - name: auth
+    description: "Авторизация"
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: './common.yaml#/components/securitySchemes/bearerAuth'
+  schemas:
+    Email:
+      type: string
+      example: "test@test.ru"
+    UserName:
+      type: string
+      example: "Иван"
+    Password:
+      type: string
+      format: password
+      example: "test"
+    Test:
+      type: object
+      properties:
+        email:
+          $ref: '#/components/schemas/Email'
+        password:
+          $ref: '#/components/schemas/Password'
+  parameters:
+    EmailParam:
+      name: email
+      description: ""
+      in: query
+      schema:
+        $ref: '#/components/schemas/Email'
+    PasswordParam:
+      name: password
+      description: ""
+      in: query
+      schema:
+        $ref: '#/components/schemas/Password'
+  requestBodies:
+    TestRequest:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/Test'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/Test'
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Test'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Test'
+  responses:
+    ProfileResponse:
+      description: "Профиль пользователя"
+      content:
+        application/json:
+          schema:
+            title: ""
+            type: object
+            properties:
+              email:
+                $ref: '#/components/schemas/Email'
+              name:
+                $ref: '#/components/schemas/UserName'
+              permissions:
+                type: object
+                description: "Ресурсы и действия"
+                properties:
+                  client:
+                    type: object
+                    description: "Действия"
+                    properties:
+                      create:
+                        type: boolean
+                        description: "Создавать"
+                        example: true
+    TestResponse:
+      description: ""
+      content:
+        application/json:
+          schema:
+            title: ""
+            type: object
+            properties:
+              token:
+                type: string
+paths:
+  /auth/profile:
+    get:
+      tags:
+        - auth
+      responses:
+        200:
+          $ref: '#/components/responses/ProfileResponse'
+        500:
+          $ref: './common/components.yaml#/components/responses/ErrorResponse'
+  /test:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/EmailParam'
+        - $ref: '#/components/parameters/PasswordParam'
+      responses:
+        200:
+          $ref: '#/components/responses/TestResponse'
+
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/TestRequest"
+      responses:
+        200:
+          $ref: '#/components/responses/TestResponse'

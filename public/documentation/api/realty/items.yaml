@@ -1,0 +1,177 @@
+openapi: 3.1.0
+info:
+  title: Realty-Items
+  description: "Справочники по недвижимости"
+  version: 1.0.0
+components:
+  schemas:
+    OperationId:
+      type: integer
+      description: "Код операции"
+      example: 8
+    OperationCode:
+      type: string
+      description: "Операции"
+      example: "sale"
+    OperationName:
+      type: string
+      description: "Наименование операции"
+      example: "Продаю"
+
+    Operation:
+      status: object
+      description: "Операция"
+      properties:
+        id:
+          $ref: "#/components/schemas/OperationId"
+        code:
+          $ref: "#/components/schemas/OperationCode"
+        name:
+          $ref: "#/components/schemas/OperationName"
+
+    NoticeTypeId:
+      type: integer
+      description: "Код типа недвижимости"
+      example: 12
+    ParentNoticeTypeId:
+      type: [integer, "null"]
+      description: "Код родителя типа недвижимости"
+      example: 1
+    Ordnum:
+      type: integer
+      description: "Порядковый номер"
+      example: 1
+    NoticeTypeName:
+      type: string
+      description: "Наименование типа недвижимости"
+      example: "Квартира в готовом доме"
+    AllowedAlternativeTypeIds:
+      type: [array, "null"]
+      description: "Допустимые альтернативные типы недвижимости (для своих объектов)"
+      example: [2,3,4]
+    SimilarTypeIds:
+      type: [array, "null"]
+      description: "Схожие типы недвижимости (для поиска похожих объявлений)"
+      example: [5, 6, 7]
+
+    NoticeType:
+      status: object
+      description: "Тип недвижимости"
+      properties:
+        id:
+          $ref: "#/components/schemas/NoticeTypeId"
+        parent_id:
+          $ref: "#/components/schemas/ParentNoticeTypeId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/NoticeTypeName"
+        allowed_alternative_type_ids:
+          $ref: "#/components/schemas/AllowedAlternativeTypeIds"
+        similar_type_ids:
+          $ref: "#/components/schemas/SimilarTypeIds"
+
+    NoticeTypeInsert:
+      status: object
+      description: "Добавление типа недвижимости"
+      properties:
+        parent_id:
+          $ref: "#/components/schemas/ParentNoticeTypeId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/NoticeTypeName"
+        allowed_alternative_type_ids:
+          $ref: "#/components/schemas/AllowedAlternativeTypeIds"
+        similar_type_ids:
+          $ref: "#/components/schemas/SimilarTypeIds"
+      required:
+        - name
+
+    NoticeTypeUpdate:
+      status: object
+      description: "Тип недвижимости"
+      properties:
+        id:
+          $ref: "#/components/schemas/NoticeTypeId"
+        parent_id:
+          $ref: "#/components/schemas/ParentNoticeTypeId"
+        ordnum:
+          $ref: "#/components/schemas/Ordnum"
+        name:
+          $ref: "#/components/schemas/NoticeTypeName"
+        allowed_alternative_type_ids:
+          $ref: "#/components/schemas/AllowedAlternativeTypeIds"
+        similar_type_ids:
+          $ref: "#/components/schemas/SimilarTypeIds"
+      required:
+        - id
+        - name
+
+    NoticeTypeDelete:
+      status: object
+      description: "Удаление типа недвижимости"
+      properties:
+        id:
+          $ref: "#/components/schemas/NoticeTypeId"
+      required:
+        - id
+
+  requestBodies:
+    NoticeTypeInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NoticeTypeInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/NoticeTypeInsert'
+    NoticeTypeUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NoticeTypeUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/NoticeTypeUpdate'
+    NoticeTypeDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NoticeTypeDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/NoticeTypeDelete'
+
+
+  responses:
+    OperationsResponse:
+      description: "Операции"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Операции"
+                items:
+                  $ref: '#/components/schemas/Operation'
+    NoticeTypeResponse:
+      description: "Тип недвижимости"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NoticeType'
+    NoticeTypesResponse:
+      description: "Типы недвижимости"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Типы недвижимости"
+                items:
+                  $ref: '#/components/schemas/NoticeType'

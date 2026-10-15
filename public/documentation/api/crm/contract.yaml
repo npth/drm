@@ -1,0 +1,1397 @@
+openapi: 3.1.0
+info:
+  title: Contract
+  description: "Счета"
+  version: 1.0.0
+components:
+  schemas:
+    TypeId:
+      type: integer
+      description: "Код типа счета"
+      example: 1
+    TypeName:
+      type: string
+      description: "Рабочее наименование типа"
+      example: "для агентств"
+    TypeFullname:
+      type: string
+      description: "Полное наименование"
+      example: "Для агентств недвижимости и индивидуальных риелторов"
+    TypeNote:
+      type: string
+      nullable: true
+      description: "Примечание для менеджера"
+      example: "Основной изменяемый параметр - количество каналов"
+    UseGroups:
+      type: boolean
+      description: "Использование групп тарифов"
+      example: true
+
+    Published:
+      type: [integer, "null"]
+      nullable: true
+      description: "Количество опубликованных объявлений"
+      example: 10
+    PublishedPerChannel:
+      type: [number, "null"]
+      nullable: true
+      description: "Количество опубликованных объявлений на канал"
+      example: 3.3
+    ContactsPerDay:
+      type: [integer, "null"]
+      nullable: true
+      description: "Просмотров за день"
+      example: 10
+    ContactsPerPeriod:
+      type: [integer, "null"]
+      nullable: true
+      description: "Просмотров за период"
+      example: 100
+    NoticeOperationIds:
+      type: [array, "null"]
+      items:
+        type: integer
+      nullable: true
+      description: "Операции"
+      example: [ 1, 3, 5 ]
+    NoticeTypeIds:
+      type: [array, "null"]
+      items:
+        type: integer
+      nullable: true
+      description: "Типы недвижимости"
+      example: [ 10, 20 ]
+    DistrictIds:
+      type: [array, "null"]
+      items:
+        type: integer
+      nullable: true
+      description: "Районы"
+      example: [ 101, 102, 105 ]
+    NoticesStore:
+      type: [integer, "null"]
+      nullable: true
+      description: "Хранимых объектов"
+      example: 50
+    NoticesActive:
+      type: [integer, "null"]
+      nullable: true
+      description: "Публикаций в базе"
+      example: 10
+    ChannelsNumber:
+      type: [integer, "null"]
+      nullable: true
+      description: "Каналов"
+      example: 3
+    AccessNumber:
+      type: [integer, "null"]
+      nullable: true
+      description: "Пользователей"
+      example: 1
+    RequiredLimits:
+      type: array
+      description: "Список основных полей"
+      items:
+        type: string
+        enum:
+          - contacts_per_day
+          - contacts_per_period
+          - notice_operation_ids
+          - notice_type_ids
+          - district_ids
+          - notices_store
+          - notices_active
+          - channels
+          - accesses
+        example: "channels"
+
+    ContractId:
+      type: integer
+      description: "Код счета"
+      example: 1
+    ContractNumber:
+      type: string
+      description: "Номер счета"
+      example: "230201011"
+    StartedAt:
+      type: string
+      format: datetime
+      description: "Начало действия счета"
+      example: "2026-04-01T18:26:05.000000"
+    FinishedAt:
+      type: string
+      format: datetime
+      description: "Конец действия счета"
+      example: "2026-06-01T18:26:05.000000"
+    StatusCode:
+      type: string
+      description: "Статус счета"
+      example: "active"
+    StatusName:
+      type: string
+      description: "Наименование статуса счета"
+      example: "Действующий"
+    PaymentStatusCode:
+      type: string
+      description: "Статус оплаты счета"
+      example: "paid"
+    PaymentStatusName:
+      type: string
+      description: "Наименование статуса оплаты счета"
+      example: "Оплачен"
+    PayerTypeCode:
+      type: string
+      description: "Код типа плательщика: person (физическое лицо, заполняется доп поле person_name) или agency (юридическое лицо, заполняются доп поля, начинающиеся с agency_)"
+      example: "person"
+    PayerTypeName:
+      type: string
+      description: "Наименование типа плательщика"
+      example: "Физическое лицо"
+    PaymentMethodCode:
+      type: string
+      description: "Код метода оплаты"
+      example: "qr"
+    PaymentMethodName:
+      type: string
+      description: "Наименование метода оплаты"
+      example: "Оплата QR-кодом"
+
+    Limits:
+      type: object
+      description: "Ограничения и лимиты для пользователя/тарифа"
+      properties:
+        contacts_per_day:
+          $ref: '#/components/schemas/ContactsPerDay'
+        contacts_per_period:
+          $ref: '#/components/schemas/ContactsPerPeriod'
+        notice_operation_ids:
+          $ref: '#/components/schemas/NoticeOperationIds'
+        notice_type_ids:
+          $ref: '#/components/schemas/NoticeTypeIds'
+        district_ids:
+          $ref: '#/components/schemas/DistrictIds'
+        notices_store:
+          $ref: '#/components/schemas/NoticesStore'
+        notices_active:
+          $ref: '#/components/schemas/NoticesActive'
+        channels:
+          $ref: '#/components/schemas/ChannelsNumber'
+        accesses:
+          $ref: '#/components/schemas/AccessNumber'
+
+    ContractType:
+      type: object
+      description: "Тип счета"
+      properties:
+        id:
+          $ref: "#/components/schemas/TypeId"
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        name:
+          $ref: "#/components/schemas/TypeName"
+        fullname:
+          $ref: "#/components/schemas/TypeFullname"
+        use_groups:
+          $ref: "#/components/schemas/UseGroups"
+        required_limits:
+          $ref: "#/components/schemas/RequiredLimits"
+        default_limits:
+          $ref: "#/components/schemas/Limits"
+        note:
+          $ref: "#/components/schemas/TypeNote"
+
+    TypeInsert:
+      type: object
+      description: "Добавление типа счета"
+      properties:
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        name:
+          $ref: "#/components/schemas/TypeName"
+        fullname:
+          $ref: "#/components/schemas/TypeFullname"
+        use_groups:
+          $ref: "#/components/schemas/UseGroups"
+        required_limits:
+          $ref: "#/components/schemas/RequiredLimits"
+        default_limits:
+          $ref: "#/components/schemas/Limits"
+        note:
+          $ref: "#/components/schemas/TypeNote"
+      required:
+        - macroregion_id
+        - name
+        - fullname
+        - use_groups
+        - required_limits
+
+    TypeUpdate:
+      type: object
+      description: "Обновление типа счета"
+      properties:
+        id:
+          $ref: "#/components/schemas/TypeId"
+        macroregion_id:
+          $ref: "./../geography/macroregion.yaml#/components/schemas/MacroRegionId"
+        name:
+          $ref: "#/components/schemas/TypeName"
+        fullname:
+          $ref: "#/components/schemas/TypeFullname"
+        use_groups:
+          $ref: "#/components/schemas/UseGroups"
+        required_limits:
+          $ref: "#/components/schemas/RequiredLimits"
+        default_limits:
+          $ref: "#/components/schemas/Limits"
+        note:
+          $ref: "#/components/schemas/TypeNote"
+      required:
+        - id
+        - macroregion_id
+        - name
+        - fullname
+        - use_groups
+        - required_limits
+
+    TypeDelete:
+      type: object
+      description: "Удаление типа счета"
+      properties:
+        id:
+          $ref: "#/components/schemas/TypeId"
+      required:
+        - id
+
+    Status:
+      status: object
+      description: "Статус счета"
+      properties:
+        code:
+          $ref: "#/components/schemas/StatusCode"
+        name:
+          $ref: "#/components/schemas/StatusName"
+    PaymentStatus:
+      status: object
+      description: "Статус оплаты счета"
+      properties:
+        code:
+          $ref: "#/components/schemas/PaymentStatusCode"
+        name:
+          $ref: "#/components/schemas/PaymentStatusName"
+
+    PayerType:
+      status: object
+      description: "Типы плательщика"
+      properties:
+        code:
+          $ref: "#/components/schemas/PayerTypeCode"
+        name:
+          $ref: "#/components/schemas/PayerTypeName"
+    PaymentMethod:
+      status: object
+      description: "Методы оплаты"
+      properties:
+        code:
+          $ref: "#/components/schemas/PaymentMethodCode"
+        name:
+          $ref: "#/components/schemas/PaymentMethodName"
+
+    Confirmed1dayNotify:
+      type: [integer, "null"]
+      nullable: true
+      title: "Кол-во просмотров в день на 1 канал для уведомления"
+      example: 40
+    Confirmed1dayLimit:
+      type: [integer, "null"]
+      nullable: true
+      title: "Кол-во просмотров в день на 1 канал для ограничения"
+      example: 50
+    Confirmed1dayLimitOffAt:
+      type: [string, "null"]
+      format: date
+      nullable: true
+      title: "Дата снятия ограничения в день на 1 канал"
+      example: "2023-10-20"
+    Confirmed3dayNotify:
+      type: [integer, "null"]
+      nullable: true
+      title: "Кол-во просмотров за 3 дня на 1 канал для уведомления"
+      example: 80
+    Confirmed3dayLimit:
+      type: [integer, "null"]
+      nullable: true
+      title: "Кол-во просмотров за 3 дня на 1 канал для ограничения"
+      example: 100
+    Confirmed3dayLimitOffAt:
+      type: [string, "null"]
+      format: date
+      nullable: true
+      title: "Дата снятия ограничения за 3 дня на 1 канал"
+      example: "2023-10-20"
+    ConfirmedWeekNotify:
+      type: [integer, "null"]
+      nullable: true
+      title: "Кол-во просмотров в неделю на 1 канал для уведомления"
+      example: 280
+    ConfirmedWeekLimit:
+      type: [integer, "null"]
+      nullable: true
+      title: "Кол-во просмотров в неделю на 1 канал для ограничения"
+      example: 350
+    ConfirmedWeekLimitOffAt:
+      type: [string, "null"]
+      format: date
+      nullable: true
+      title: "Дата снятия ограничения в неделю на 1 канал"
+      example: "2023-10-20"
+    ApiKey:
+      type: [string, "null"]
+      nullable: true
+      title: "Ключ апи"
+      example: "abc123"
+    IsManageSelections:
+      type: [boolean, "null"]
+      nullable: true
+      title: "Управление отборами объявлений для выгрузки"
+      example: true
+    PersonName:
+      type: [string, "null"]
+      nullable: true
+      description: "ФИО плательщика"
+      example: "Иванов И.И."
+    AgencyName:
+      type: [string, "null"]
+      nullable: true
+      description: "Наименование организации"
+      example: "ООО Проверка"
+    AgencyInn:
+      type: [string, "null"]
+      nullable: true
+      description: "ИНН организации"
+      example: "2311123456"
+    AgencyKpp:
+      type: [string, "null"]
+      nullable: true
+      description: "КПП организации"
+      example: "09112345"
+    AgencyBank:
+      type: [string, "null"]
+      nullable: true
+      description: "Реквизиты банка"
+      example: "Южный филиал Уральского банка"
+    AgencyAddress:
+      type: [string, "null"]
+      nullable: true
+      description: "Адрес организации"
+      example: "г Краснодар"
+    AgencyPhone:
+      type: [string, "null"]
+      nullable: true
+      description: "Телефон организации"
+      example: "+7 (918) 111-22-33"
+    PayedAt:
+      type: [string, "null"]
+      nullable: true
+      format: datetime
+      description: "Дата/время оплаты"
+      example: "2026-04-01T18:26:05.000000Z"
+
+    AccessId:
+      type: integer
+      description: "Код доступа к счету"
+      example: 12
+    AccessOrdnum:
+      type: integer
+      description: "Порядковый номер доступа к счету"
+      example: 1
+    AccessActive:
+      type: boolean
+      description: "Активен ли доступ"
+      example: true
+    DeactivatedAt:
+      type: string
+      format: 'datetimez'
+      description: "Дата деактивации"
+      example: '2026-04-01T17:16:02.000000Z'
+
+
+    ContractManagement:
+      type: object
+      properties:
+        manager_id:
+          $ref: './client.yaml#/components/schemas/ManagerId'
+        contacts_show_days:
+          type: [integer, "null"]
+          nullable: true
+          description: "Срок хранения открытых контактов"
+          example: 14
+        notices_store_days:
+          type: [integer, "null"]
+          nullable: true
+          description: "Срок хранения своих объектов"
+          example: 30
+        notices_active_days:
+          type: [integer, "null"]
+          nullable: true
+          description: "Срок публикации своих объектов"
+          example: 15
+        use_owner_ip:
+          type: boolean
+          description: "Использование динамического IP владельца счета"
+          example: true
+        owner_ip:
+          type: [string, "null"]
+          nullable: true
+          description: "IP адрес владельца счета"
+          example: "1.1.1.1"
+        allowed_ip_addresses:
+          type: [array, "null"]
+          nullable: true
+          items:
+            type: string
+          description: "Разрешенные IP адреса"
+          example: [ "1.1.1.1" ]
+        confirmed_1day_notify:
+          $ref: '#/components/schemas/Confirmed1dayNotify'
+        confirmed_1day_limit:
+          $ref: '#/components/schemas/Confirmed1dayLimit'
+        confirmed_1day_limit_off_at:
+          $ref: '#/components/schemas/Confirmed1dayLimitOffAt'
+        confirmed_3day_notify:
+          $ref: '#/components/schemas/Confirmed3dayNotify'
+        confirmed_3day_limit:
+          $ref: '#/components/schemas/Confirmed3dayLimit'
+        confirmed_3day_limit_off_at:
+          $ref: '#/components/schemas/Confirmed3dayLimitOffAt'
+        confirmed_week_notify:
+          $ref: '#/components/schemas/ConfirmedWeekNotify'
+        confirmed_week_limit:
+          $ref: '#/components/schemas/ConfirmedWeekLimit'
+        confirmed_week_limit_off_at:
+          $ref: '#/components/schemas/ConfirmedWeekLimitOffAt'
+        api_key:
+          $ref: '#/components/schemas/ApiKey'
+        is_manage_selections:
+          $ref: '#/components/schemas/IsManageSelections'
+
+      required:
+        - use_owner_ip
+    ContractPayment:
+      type: object
+      properties:
+        tariff_id:
+          $ref: './tariff.yaml#/components/schemas/TariffId'
+        discount_id:
+          $ref: './tariff.yaml#/components/schemas/DiscountId'
+        district_discount_id:
+          $ref: './tariff.yaml#/components/schemas/DiscountId'
+        promo_code_id:
+          $ref: './tariff.yaml#/components/schemas/DiscountId'
+        price:
+          $ref: './tariff.yaml#/components/schemas/Price'
+        discount:
+          $ref: './tariff.yaml#/components/schemas/SummaryDiscount'
+        bonus_discount:
+          $ref: './tariff.yaml#/components/schemas/BonusDiscount'
+        cost:
+          $ref: './tariff.yaml#/components/schemas/Cost'
+        payer_type_code:
+          $ref: '#/components/schemas/PayerTypeCode'
+        person_name:
+          $ref: '#/components/schemas/PersonName'
+        agency_name:
+          $ref: '#/components/schemas/AgencyName'
+        agency_inn:
+          $ref: '#/components/schemas/AgencyInn'
+        agency_kpp:
+          $ref: '#/components/schemas/AgencyKpp'
+        agency_bank:
+          $ref: '#/components/schemas/AgencyBank'
+        agency_address:
+          $ref: '#/components/schemas/AgencyAddress'
+        agency_phone:
+          $ref: '#/components/schemas/AgencyPhone'
+        method_code:
+          $ref: '#/components/schemas/PaymentMethodCode'
+        payed_at:
+          $ref: '#/components/schemas/PayedAt'
+        tariff_exchange_id:
+          $ref: './tariff.yaml#/components/schemas/ExchangeId'
+        status_code:
+          $ref: '#/components/schemas/PaymentStatusCode'
+      required:
+        - tariff_id
+        - price
+        - cost
+        - pay_as
+        - method_code
+        - status_code
+    Contract:
+      type: object
+      description: "Счет"
+      properties:
+        id:
+          $ref: "#/components/schemas/ContractId"
+        client_id:
+          $ref: "./client.yaml#/components/schemas/ClientId"
+        type_id:
+          $ref: "#/components/schemas/TypeId"
+        number:
+          $ref: "#/components/schemas/ContractNumber"
+        started_at:
+          $ref: "#/components/schemas/StartedAt"
+        finished_at:
+          $ref: "#/components/schemas/FinishedAt"
+        status:
+          $ref: "#/components/schemas/StatusCode"
+
+        contacts_per_day:
+          $ref: '#/components/schemas/ContactsPerDay'
+        contacts_per_period:
+          $ref: '#/components/schemas/ContactsPerPeriod'
+        notice_operation_ids:
+          $ref: '#/components/schemas/NoticeOperationIds'
+        notice_type_ids:
+          $ref: '#/components/schemas/NoticeTypeIds'
+        district_ids:
+          $ref: '#/components/schemas/DistrictIds'
+        notices_store:
+          $ref: '#/components/schemas/NoticesStore'
+        notices_active:
+          $ref: '#/components/schemas/NoticesActive'
+        channels:
+          $ref: '#/components/schemas/ChannelsNumber'
+        accesses:
+          $ref: '#/components/schemas/AccessNumber'
+        management:
+          $ref: '#/components/schemas/ContractManagement'
+        payment:
+          $ref: '#/components/schemas/ContractPayment'
+
+    ContractPermissions:
+      type: object
+      description: "Права доступа к счету"
+      properties:
+        update:
+          type: boolean
+          description: "Право на редактирование"
+          example: true
+        delete:
+          type: boolean
+          description: "Право на удаление"
+          example: true
+
+    ContractStats:
+      type: object
+      description: "Статистика по счету"
+      properties:
+        published_count:
+          $ref: '#/components/schemas/Published'
+        published_per_channel:
+          $ref: '#/components/schemas/PublishedPerChannel'
+        contacts_per_day:
+          $ref: '#/components/schemas/ContactsPerDay'
+        contacts_per_period:
+          $ref: '#/components/schemas/ContactsPerPeriod'
+
+    ContractWithStats:
+      type: object
+      description: "Счет со статистикой"
+      properties:
+        id:
+          $ref: "#/components/schemas/ContractId"
+        client_id:
+          $ref: "./client.yaml#/components/schemas/ClientId"
+        type_id:
+          $ref: "#/components/schemas/TypeId"
+        number:
+          $ref: "#/components/schemas/ContractNumber"
+        started_at:
+          $ref: "#/components/schemas/StartedAt"
+        finished_at:
+          $ref: "#/components/schemas/FinishedAt"
+        status_code:
+          $ref: "#/components/schemas/StatusCode"
+
+        contacts_per_day:
+          $ref: '#/components/schemas/ContactsPerDay'
+        contacts_per_period:
+          $ref: '#/components/schemas/ContactsPerPeriod'
+        notice_operation_ids:
+          $ref: '#/components/schemas/NoticeOperationIds'
+        notice_type_ids:
+          $ref: '#/components/schemas/NoticeTypeIds'
+        district_ids:
+          $ref: '#/components/schemas/DistrictIds'
+        notices_store:
+          $ref: '#/components/schemas/NoticesStore'
+        notices_active:
+          $ref: '#/components/schemas/NoticesActive'
+        channels:
+          $ref: '#/components/schemas/ChannelsNumber'
+        accesses:
+          $ref: '#/components/schemas/AccessNumber'
+
+        management:
+          $ref: '#/components/schemas/ContractManagement'
+        payment:
+          $ref: '#/components/schemas/ContractPayment'
+        permissions:
+          $ref: '#/components/schemas/ContractPermissions'
+        stats:
+          $ref: '#/components/schemas/ContractStats'
+
+
+    ContractSearch:
+      type: object
+      properties:
+        filters:
+          type: array
+          description: "Набор фильтров"
+          items:
+            oneOf:
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Код клиента"
+                    example: "client_id"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      type: integer
+                      description: "Код клиента"
+                      example: 123
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Поиск по номеру"
+                    example: "number"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorLike'
+                  value:
+                    type: string
+                    description: "Значение"
+                    example: "260902001"
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Код типа счета"
+                    example: "type_id"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TypeId'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Код статуса счета"
+                    example: "status_code"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusCode'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Дата начала действия счета"
+                    example: "started_at"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+                  from:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeFrom'
+                  to:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeTo'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Дата конца действия счета"
+                    example: "finished_at"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+                  from:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeFrom'
+                  to:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeTo'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Дата создания записи клиента"
+                    example: "created_at"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+                  from:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeFrom'
+                  to:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeTo'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Дата обновления записи клиента"
+                    example: "updated_at"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+                  from:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeFrom'
+                  to:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeTo'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Код менеджера"
+                    example: "management.manager_id"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      $ref: './client.yaml#/components/schemas/ManagerId'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Код тарифа"
+                    example: "payment.tariff_id"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      $ref: './tariff.yaml#/components/schemas/TariffId'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Тип плательщика"
+                    example: "payment.payer_type_code"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PayerTypeCode'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Метод оплаты"
+                    example: "payment.method_code"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PaymentMethodCode'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Дата оплаты счета"
+                    example: "payment.payed_at"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+                  from:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeFrom'
+                  to:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldDateTimeTo'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Статус оплаты"
+                    example: "payment.status_code"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PaymentStatusCode'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Цена без скидки"
+                    example: "payment.price"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+                  from:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldIntegerFrom'
+                  to:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldIntegerTo'
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Стоимость, цена с учетом скидок"
+                    example: "payment.cost"
+                  operator:
+                    $ref: './../common/filters.yaml#/components/schemas/OperatorBetween'
+                  from:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldIntegerFrom'
+                  to:
+                    $ref: './../common/filters.yaml#/components/schemas/FieldIntegerTo'
+        sorters:
+          $ref: './../common/filters.yaml#/components/schemas/Sorters'
+        paging:
+          $ref: './../common/filters.yaml#/components/schemas/Paging'
+        options:
+          type: object
+          properties:
+            client_id:
+              type: [integer, "null"]
+              nullable: true
+              description: 'Код клиента (просмотры, публикации)'
+              example: 123
+            period:
+              type: object
+              description: 'Период для сбора статистики просмотров'
+              properties:
+                from:
+                  type: [string, "null"]
+                  format: datetime
+                  nullable: true
+                  description: 'Период от'
+                  example: '2026-04-01T18:26:05.000000Z'
+                to:
+                  type: [string, "null"]
+                  format: datetime
+                  nullable: true
+                  description: 'Период до'
+                  example: '2026-04-30T18:26:05.000000Z'
+
+
+    ContractInsert:
+      type: object
+      description: "Добавление счета"
+      properties:
+        client_id:
+          $ref: "./client.yaml#/components/schemas/ClientId"
+        type_id:
+          $ref: "#/components/schemas/TypeId"
+        started_at:
+          $ref: "#/components/schemas/StartedAt"
+        finished_at:
+          $ref: "#/components/schemas/FinishedAt"
+        status_code:
+          $ref: "#/components/schemas/StatusCode"
+
+        contacts_per_day:
+          $ref: '#/components/schemas/ContactsPerDay'
+        contacts_per_period:
+          $ref: '#/components/schemas/ContactsPerPeriod'
+        notice_operation_ids:
+          $ref: '#/components/schemas/NoticeOperationIds'
+        notice_type_ids:
+          $ref: '#/components/schemas/NoticeTypeIds'
+        district_ids:
+          $ref: '#/components/schemas/DistrictIds'
+        notices_store:
+          $ref: '#/components/schemas/NoticesStore'
+        notices_active:
+          $ref: '#/components/schemas/NoticesActive'
+        channels:
+          $ref: '#/components/schemas/ChannelsNumber'
+        accesses:
+          $ref: '#/components/schemas/AccessNumber'
+        management:
+          $ref: '#/components/schemas/ContractManagement'
+        payment:
+          $ref: '#/components/schemas/ContractPayment'
+      required:
+        - client_id
+        - type_id
+        - started_at
+        - finished_at
+        - status
+        - management
+        - payment
+
+    ContractUpdate:
+      type: object
+      description: "Обновление счета"
+      properties:
+        id:
+          $ref: "#/components/schemas/ContractId"
+        client_id:
+          $ref: "./client.yaml#/components/schemas/ClientId"
+        type_id:
+          $ref: "#/components/schemas/TypeId"
+        started_at:
+          $ref: "#/components/schemas/StartedAt"
+        finished_at:
+          $ref: "#/components/schemas/FinishedAt"
+        status_code:
+          $ref: "#/components/schemas/StatusCode"
+
+        contacts_per_day:
+          $ref: '#/components/schemas/ContactsPerDay'
+        contacts_per_period:
+          $ref: '#/components/schemas/ContactsPerPeriod'
+        notice_operation_ids:
+          $ref: '#/components/schemas/NoticeOperationIds'
+        notice_type_ids:
+          $ref: '#/components/schemas/NoticeTypeIds'
+        district_ids:
+          $ref: '#/components/schemas/DistrictIds'
+        notices_store:
+          $ref: '#/components/schemas/NoticesStore'
+        notices_active:
+          $ref: '#/components/schemas/NoticesActive'
+        channels:
+          $ref: '#/components/schemas/ChannelsNumber'
+        accesses:
+          $ref: '#/components/schemas/AccessNumber'
+        management:
+          $ref: '#/components/schemas/ContractManagement'
+        payment:
+          $ref: '#/components/schemas/ContractPayment'
+      required:
+        - id
+        - client_id
+        - type_id
+        - started_at
+        - finished_at
+        - status
+        - management
+        - payment
+
+    ContractDelete:
+      type: object
+      description: "Удаление счета"
+      properties:
+        id:
+          $ref: "#/components/schemas/ContractId"
+      required:
+        - id
+
+    AccessSearch:
+      type: object
+      properties:
+        filters:
+          type: array
+          description: "Набор фильтров"
+          items:
+            oneOf:
+              - type: object
+                properties:
+                  field:
+                    type: string
+                    description: "Код счета"
+                    example: "contract_id"
+                  operator:
+                    $ref: '../common/filters.yaml#/components/schemas/OperatorIn'
+                  values:
+                    type: array
+                    items:
+                      type: integer
+                      description: "Код счета"
+                      example: 123
+        sorters:
+          $ref: './../common/filters.yaml#/components/schemas/Sorters'
+        paging:
+          $ref: './../common/filters.yaml#/components/schemas/Paging'
+        options:
+          type: object
+          properties:
+            period:
+              type: object
+              description: 'Период для сбора статистики просмотров'
+              properties:
+                from:
+                  type: [string, "null"]
+                  format: datetime
+                  nullable: true
+                  description: 'Период от'
+                  example: '2026-04-01T18:26:05.000000Z'
+                to:
+                  type: [string, "null"]
+                  format: datetime
+                  nullable: true
+                  description: 'Период до'
+                  example: '2026-04-30T18:26:05.000000Z'
+
+    AccessWithStats:
+      type: object
+      description: "Доступ к счету"
+      properties:
+        id:
+          $ref: "#/components/schemas/AccessId"
+        contract_id:
+          $ref: '#/components/schemas/ContractId'
+        ordnum:
+          $ref: "#/components/schemas/AccessOrdnum"
+        employee:
+          $ref: './client.yaml#/components/schemas/Employee'
+        active:
+          $ref: '#/components/schemas/AccessActive'
+        created_at:
+          $ref: '../common/components.yaml#/components/schemas/CreatedAt'
+        deactivated_at:
+          $ref: '#/components/schemas/DeactivatedAt'
+        updated_at:
+          $ref: '../common/components.yaml#/components/schemas/UpdatedAt'
+        deleted_at:
+          $ref: '../common/components.yaml#/components/schemas/DeletedAt'
+
+        stats:
+          $ref: '#/components/schemas/ContractStats'
+
+    Access:
+      type: object
+      description: "Доступ к счету"
+      properties:
+        id:
+          $ref: "#/components/schemas/AccessId"
+        contract_id:
+          $ref: '#/components/schemas/ContractId'
+        ordnum:
+          $ref: "#/components/schemas/AccessOrdnum"
+        employee_id:
+          $ref: './client.yaml#/components/schemas/ClientId'
+        active:
+          $ref: '#/components/schemas/AccessActive'
+        created_at:
+          $ref: '../common/components.yaml#/components/schemas/CreatedAt'
+        deactivated_at:
+          $ref: '#/components/schemas/DeactivatedAt'
+        updated_at:
+          $ref: '../common/components.yaml#/components/schemas/UpdatedAt'
+        deleted_at:
+          $ref: '../common/components.yaml#/components/schemas/DeletedAt'
+
+    AccessInsert:
+      type: object
+      description: "Добавление доступа"
+      properties:
+        contract_id:
+          $ref: '#/components/schemas/ContractId'
+        employee_id:
+          $ref: './client.yaml#/components/schemas/ClientId'
+
+    AccessAdd:
+      type: object
+      description: "Добавление доступа"
+      properties:
+        contract_id:
+          $ref: '#/components/schemas/ContractId'
+        emails:
+          type: array
+          items:
+            $ref: './client.yaml#/components/schemas/Email'
+    AccessCopy:
+      type: object
+      description: "Копирование доступов, source_contract_id - источник, target_contract_id - назначение"
+      properties:
+        source_contract_id:
+          $ref: '#/components/schemas/ContractId'
+        target_contract_id:
+          $ref: '#/components/schemas/ContractId'
+    AccessMove:
+      type: object
+      description: "Перемещение доступа в порядке сортировки вверх или вниз"
+      properties:
+        access_id:
+          $ref: '#/components/schemas/AccessId'
+        direct:
+          type: string
+          description: 'Направление перемещения, up - вверх, down - вниз'
+          example: 'up'
+    AccessSetActive:
+      type: object
+      description: "Активировать/деактивировать доступ к счету"
+      properties:
+        access_id:
+          $ref: '#/components/schemas/AccessId'
+        active:
+          type: boolean
+          description: 'Признак активности'
+          example: true
+    AccessSetDeleted:
+      type: object
+      description: "Удалить/вернуть доступ к счету"
+      properties:
+        access_id:
+          $ref: '#/components/schemas/AccessId'
+        deleted:
+          type: boolean
+          description: 'Признак активности'
+          example: true
+
+
+
+  requestBodies:
+
+    ContractSearchRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ContractSearch'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ContractSearch'
+
+    AccessSearchRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessSearch'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/AccessSearch'
+
+    TypeInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TypeInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/TypeInsert'
+    TypeUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TypeUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/TypeUpdate'
+    TypeDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TypeDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/TypeDelete'
+
+    ContractInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ContractInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ContractInsert'
+    ContractUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ContractUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ContractUpdate'
+    ContractDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ContractDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ContractDelete'
+
+    AccessInsertRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessInsert'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/AccessInsert'
+    AccessUpdateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessUpdate'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/AccessUpdate'
+    AccessDeleteRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessDelete'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/AccessDelete'
+
+    AccessAddRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessAdd'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/AccessAdd'
+    AccessCopyRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessCopy'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/AccessCopy'
+    AccessMoveRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessMove'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/AccessMove'
+    AccessSetActiveRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessSetActive'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/AccessSetActive'
+    AccessSetDeletedRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessSetDeleted'
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/AccessSetDeleted'
+
+  responses:
+    TypeResponse:
+      description: "Тип счета"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ContractType'
+    TypesResponse:
+      description: "Типы счетов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Типы счетов"
+                items:
+                  $ref: '#/components/schemas/ContractType'
+    StatusesResponse:
+      description: "Статусы счетов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Статусы счетов"
+                items:
+                  $ref: '#/components/schemas/Status'
+    PaymentStatusesResponse:
+      description: "Статусы оплаты счетов"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Статусы оплаты счетов"
+                items:
+                  $ref: '#/components/schemas/PaymentStatus'
+    PayerTypesResponse:
+      description: "Типы плательщика"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Типы плательщика"
+                items:
+                  $ref: '#/components/schemas/PayerType'
+    PaymentMethodsResponse:
+      description: "Методы оплаты"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Методы оплаты"
+                items:
+                  $ref: '#/components/schemas/PaymentMethod'
+    ContractResponse:
+      description: "Счет"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Contract'
+    ContractsResponse:
+      description: "Счета со статистикой"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Счета"
+                items:
+                  $ref: '#/components/schemas/ContractWithStats'
+              meta:
+                $ref: './../common/filters.yaml#/components/schemas/MetaPage'
+    AccessResponse:
+      description: "Доступ к счету"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Access'
+    WorkWithAccessesResponse:
+      description: "Результат работы с доступами"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  report:
+                    type: string
+                    description: 'Протокол обработки'
+                    example: "test1@test.ru добавлен, test2@test.ru не найден"
+                  accesses:
+                    type: array
+                    description: "Счета"
+                    items:
+                      $ref: '#/components/schemas/AccessWithStats'
+    AccessesResponse:
+      description: "Доступы к счетам"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                description: "Счета"
+                items:
+                  $ref: '#/components/schemas/AccessWithStats'
+              meta:
+                $ref: './../common/filters.yaml#/components/schemas/MetaPage'
