@@ -1,6 +1,6 @@
 {
-  "name": "delorealty/management",
-  "description": "Delo Realty Management",
+  "name": "crm",
+  "description": "CRM",
   "type": "project",
   "license": "BSD-3-Clause",
   "config": {
