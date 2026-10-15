@@ -20,58 +20,58 @@ CRM-система для управления базой объектов не�
 
 | Категория | Технология |
 |-----------|-----------|
-| Frontend | React + TypeScript |
-| Сборка | Vite |
-| Стилизация | Tailwind CSS |
-| Маршрутизация | React Router |
-| Управление состоянием | Zustand / Redux Toolkit |
-| Формы | React Hook Form + Zod |
-| UI компоненты | Radix UI / shadcn/ui |
-| Графики | Recharts |
-| Таблицы | TanStack Table |
+| Backend | PHP 8.x |
+| Фреймворк | Slim Framework 4 |
+| БД | PostgreSQL |
+| API | REST (JSON) |
+| Документация | OpenAPI 3.0 (Swagger) |
 
-### Модули системы
+### Структура проекта
 
 ```
-├── 📦 Объекты недвижимости
-│   ├── Каталог объектов
-│   ├── Карточка объекта
-│   ├── Фотогалерея
-│   ├── Фильтры и поиск
-│   └── Сравнение объектов
+├── src/
+│   ├── Geography/                    # Справочники географии
+│   │   ├── MacroRegion/              # Макрорегионы
+│   │   │   ├── MacroRegion.php       # Сущность
+│   │   │   ├── MacroRegionRepository.php
+│   │   │   ├── MacroRegionService.php
+│   │   │   ├── MacroRegionController.php
+│   │   │   ├── routes.php
+│   │   │   └── migrations/
+│   │   │
+│   │   ├── Region/                   # Регионы
+│   │   │   ├── Region.php
+│   │   │   ├── RegionRepository.php
+│   │   │   ├── RegionService.php
+│   │   │   ├── RegionController.php
+│   │   │   ├── routes.php
+│   │   │   └── migrations/
+│   │   │
+│   │   ├── District/                 # Районы
+│   │   │   ├── District.php
+│   │   │   ├── DistrictRepository.php
+│   │   │   ├── DistrictService.php
+│   │   │   ├── DistrictController.php
+│   │   │   ├── routes.php
+│   │   │   └── migrations/
+│   │   │
+│   │   └── Point/                    # Населённые пункты
+│   │       ├── Point.php             # Сущность
+│   │       ├── PointRepository.php   # Репозиторий (CRUD)
+│   │       ├── PointService.php      # Бизнес-логика
+│   │       ├── PointController.php   # HTTP контроллер
+│   │       ├── routes.php            # Маршруты API
+│   │       └── migrations/
+│   │           └── 2025_01_01_create_points_table.sql
+│   │
+│   └── ... (другие модули)
 │
-├── 👥 Клиенты
-│   ├── База клиентов
-│   ├── Карточка клиента
-│   ├── История взаимодействий
-│   ├── Предпочтения и запросы
-│   └── Сегментация
+├── public/
+│   └── documentation/
+│       └── api/
+│           └── geography.yaml        # OpenAPI документация
 │
-├── 🤝 Сделки
-│   ├── Воронка сделок (Kanban)
-│   ├── Этапы сделки
-│   ├── Документооборот
-│   ├── Финансы
-│   └── История изменений
-│
-├── 📊 Аналитика
-│   ├── Дашборд
-│   ├── Отчёты по сделкам
-│   ├── Статистика объектов
-│   ├── KPI менеджеров
-│   └── Прогнозирование
-│
-├── ✅ Задачи
-│   ├── Список задач
-│   ├── Календарь
-│   ├── Напоминания
-│   └── Назначение ответственных
-│
-└── ⚙️ Настройки
-    ├── Профиль пользователя
-    ├── Роли и права
-    ├── Интеграции
-    └── Шаблоны
+└── ...
 ```
 
 ## 📂 Справочники
@@ -217,10 +217,13 @@ type DealStage =
 
 ### Этап 1 — MVP (текущий)
 - [x] Инициализация проекта
-- [ ] Базовая навигация и layout
-- [ ] Страница объектов недвижимости
-- [ ] CRUD для объектов
-- [ ] Фильтрация и поиск
+- [x] Справочник Макрорегионы (MacroRegion)
+- [x] Справочник Регионы (Region)
+- [x] Справочник Районы (District)
+- [x] Справочник Населённые пункты (Point)
+- [x] OpenAPI документация (geography.yaml)
+- [ ] CRUD для объектов недвижимости
+- [ ] Модуль клиентов
 
 ### Этап 2 — Клиенты и сделки
 - [ ] Модуль клиентов
@@ -241,44 +244,52 @@ type DealStage =
 - [ ] Мобильная адаптация
 - [ ] PWA
 
-## 📁 Структура проекта
+## 📁 Структура PHP проекта
 
 ```
 src/
-├── components/          # Переиспользуемые компоненты
-│   ├── ui/             # Базовые UI компоненты
-│   ├── layout/         # Layout компоненты
-│   └── shared/         # Общие компоненты
-├── pages/              # Страницы приложения
-├── features/           # Фичи (модули)
-│   ├── properties/     # Объекты недвижимости
-│   ├── clients/        # Клиенты
-│   ├── deals/          # Сделки
-│   ├── tasks/          # Задачи
-│   └── analytics/      # Аналитика
-├── hooks/              # Кастомные хуки
-├── store/              # Глобальное состояние
-├── services/           # API сервисы
-├── types/              # TypeScript типы
-├── utils/              # Утилиты
-├── constants/          # Константы
-└── assets/             # Статические ресурсы
+├── Geography/              # Модуль географии
+│   ├── MacroRegion/        # Макрорегионы
+│   ├── Region/             # Регионы
+│   ├── District/           # Районы
+│   └── Point/              # Населённые пункты
+│       ├── Point.php
+│       ├── PointRepository.php
+│       ├── PointService.php
+│       ├── PointController.php
+│       ├── routes.php
+│       └── migrations/
+│
+├── Property/               # Объекты недвижимости
+├── Client/                 # Клиенты
+├── Deal/                   # Сделки
+└── ...
+
+public/
+├── index.php               # Точка входа
+└── documentation/
+    └── api/
+        └── geography.yaml  # OpenAPI спецификация
 ```
 
 ## 🔧 Установка и запуск
 
 ```bash
-# Установка зависимостей
-npm install
+# Установка зависимостей Composer
+composer install
 
-# Запуск в режиме разработки
-npm run dev
+# Настройка базы данных
+# 1. Создать базу данных PostgreSQL
+# 2. Выполнить миграции из src/*/migrations/
 
-# Сборка для продакшена
-npm run build
+# Запуск встроенного PHP сервера
+php -S localhost:8000 -t public
 
-# Предпросмотр продакшен сборки
-npm run preview
+# API будет доступен по адресу:
+# http://localhost:8000/api/geography/points
+
+# OpenAPI документация:
+# public/documentation/api/geography.yaml
 ```
 
 ## 📝 Лицензия

@@ -1,0 +1,984 @@
+openapi: 3.0.3
+info:
+  title: CRM Недвижимость — API География
+  description: |
+    API для работы с территориальными справочниками:
+    - Макрорегионы (macro_regions)
+    - Регионы (regions)
+    - Районы (districts)
+    - Населённые пункты (points)
+    
+    Иерархия связей:
+    ```
+    MacroRegion → Region (macro_region_id)
+    Region → District (region_id)
+    District → Point (district_id)
+    ```
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+
+servers:
+  - url: /api
+    description: Базовый путь API
+
+tags:
+  - name: MacroRegions
+    description: Макрорегионы
+  - name: Regions
+    description: Регионы
+  - name: Districts
+    description: Районы
+  - name: Points
+    description: Населённые пункты
+
+paths:
+  # ===== Макрорегионы =====
+  /geography/macro-regions:
+    get:
+      tags:
+        - MacroRegions
+      summary: Получить список макрорегионов
+      operationId: getMacroRegions
+      parameters:
+        - name: search
+          in: query
+          description: Поиск по названию или коду
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Номер страницы
+          schema:
+            type: integer
+            default: 1
+        - name: per_page
+          in: query
+          description: Количество записей на странице
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MacroRegion'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+    post:
+      tags:
+        - MacroRegions
+      summary: Создать макрорегион
+      operationId: createMacroRegion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MacroRegionCreate'
+      responses:
+        '201':
+          description: Макрорегион создан
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MacroRegion'
+                  message:
+                    type: string
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /geography/macro-regions/{id}:
+    get:
+      tags:
+        - MacroRegions
+      summary: Получить макрорегион по ID
+      operationId: getMacroRegion
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MacroRegion'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - MacroRegions
+      summary: Обновить макрорегион
+      operationId: updateMacroRegion
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MacroRegionUpdate'
+      responses:
+        '200':
+          description: Макрорегион обновлён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MacroRegion'
+                  message:
+                    type: string
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    delete:
+      tags:
+        - MacroRegions
+      summary: Удалить макрорегион
+      operationId: deleteMacroRegion
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Макрорегион удалён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ===== Регионы =====
+  /geography/regions:
+    get:
+      tags:
+        - Regions
+      summary: Получить список регионов
+      operationId: getRegions
+      parameters:
+        - name: macro_region_id
+          in: query
+          description: Фильтр по макрорегиону
+          schema:
+            type: string
+            format: uuid
+        - name: search
+          in: query
+          description: Поиск по названию или коду
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Region'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+    post:
+      tags:
+        - Regions
+      summary: Создать регион
+      operationId: createRegion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegionCreate'
+      responses:
+        '201':
+          description: Регион создан
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Region'
+                  message:
+                    type: string
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /geography/regions/{id}:
+    get:
+      tags:
+        - Regions
+      summary: Получить регион по ID
+      operationId: getRegion
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Region'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Regions
+      summary: Обновить регион
+      operationId: updateRegion
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegionUpdate'
+      responses:
+        '200':
+          description: Регион обновлён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Region'
+                  message:
+                    type: string
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    delete:
+      tags:
+        - Regions
+      summary: Удалить регион
+      operationId: deleteRegion
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Регион удалён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ===== Районы =====
+  /geography/districts:
+    get:
+      tags:
+        - Districts
+      summary: Получить список районов
+      operationId: getDistricts
+      parameters:
+        - name: region_id
+          in: query
+          description: Фильтр по региону
+          schema:
+            type: string
+            format: uuid
+        - name: search
+          in: query
+          description: Поиск по названию или коду
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/District'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+    post:
+      tags:
+        - Districts
+      summary: Создать район
+      operationId: createDistrict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistrictCreate'
+      responses:
+        '201':
+          description: Район создан
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/District'
+                  message:
+                    type: string
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /geography/districts/{id}:
+    get:
+      tags:
+        - Districts
+      summary: Получить район по ID
+      operationId: getDistrict
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/District'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Districts
+      summary: Обновить район
+      operationId: updateDistrict
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistrictUpdate'
+      responses:
+        '200':
+          description: Район обновлён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/District'
+                  message:
+                    type: string
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    delete:
+      tags:
+        - Districts
+      summary: Удалить район
+      operationId: deleteDistrict
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Район удалён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ===== Населённые пункты =====
+  /geography/points:
+    get:
+      tags:
+        - Points
+      summary: Получить список населённых пунктов
+      description: |
+        Возвращает список населённых пунктов с поддержкой фильтрации по району и типу,
+        а также поиск по названию и коду.
+      operationId: getPoints
+      parameters:
+        - name: district_id
+          in: query
+          description: Фильтр по району (UUID)
+          schema:
+            type: string
+            format: uuid
+        - name: type
+          in: query
+          description: Фильтр по типу населённого пункта
+          schema:
+            type: string
+            enum:
+              - city
+              - town
+              - village
+              - settlement
+        - name: search
+          in: query
+          description: Поиск по названию или коду
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Номер страницы (начинается с 1)
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+        - name: per_page
+          in: query
+          description: Количество записей на странице
+          schema:
+            type: integer
+            default: 50
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Point'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+              example:
+                data:
+                  - id: "550e8400-e29b-41d4-a716-446655440000"
+                    name: "Москва"
+                    code: "MOW"
+                    district_id: "550e8400-e29b-41d4-a716-446655440001"
+                    type: "city"
+                    description: "Столица Российской Федерации"
+                    created_at: "2025-01-01T00:00:00Z"
+                    updated_at: "2025-01-01T00:00:00Z"
+                  - id: "550e8400-e29b-41d4-a716-446655440002"
+                    name: "Одинцово"
+                    code: "ODINTSOVO"
+                    district_id: "550e8400-e29b-41d4-a716-446655440003"
+                    type: "city"
+                    description: null
+                    created_at: "2025-01-01T00:00:00Z"
+                    updated_at: "2025-01-01T00:00:00Z"
+                pagination:
+                  total: 2
+                  page: 1
+                  per_page: 50
+                  total_pages: 1
+    post:
+      tags:
+        - Points
+      summary: Создать населённый пункт
+      description: Создаёт новый населённый пункт. Код должен быть уникальным.
+      operationId: createPoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PointCreate'
+            example:
+              name: "Зеленоград"
+              code: "ZELENOGRAD"
+              district_id: "550e8400-e29b-41d4-a716-446655440001"
+              type: "city"
+              description: "Город в составе Москвы"
+      responses:
+        '201':
+          description: Населённый пункт создан
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Point'
+                  message:
+                    type: string
+                    example: "Населённый пункт создан"
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /geography/points/{id}:
+    get:
+      tags:
+        - Points
+      summary: Получить населённый пункт по ID
+      operationId: getPoint
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Point'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Points
+      summary: Обновить населённый пункт
+      description: Обновляет данные населённого пункта. Все поля опциональны.
+      operationId: updatePoint
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PointUpdate'
+            example:
+              name: "Зеленоград"
+              description: "Зеленоградский административный округ Москвы"
+      responses:
+        '200':
+          description: Населённый пункт обновлён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Point'
+                  message:
+                    type: string
+                    example: "Населённый пункт обновлён"
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    delete:
+      tags:
+        - Points
+      summary: Удалить населённый пункт
+      description: |
+        Удаляет населённый пункт. Если на пункт ссылаются объекты недвижимости,
+        удаление будет заблокировано (ON DELETE RESTRICT).
+      operationId: deletePoint
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Населённый пункт удалён
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Населённый пункт удалён"
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Конфликт — есть ссылки на запись
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+# ===== Компоненты =====
+components:
+  # Параметры
+  parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      description: UUID идентификатор записи
+      schema:
+        type: string
+        format: uuid
+
+  # Схемы
+  schemas:
+    # Макрорегион
+    MacroRegion:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    MacroRegionCreate:
+      type: object
+      required:
+        - name
+        - code
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        code:
+          type: string
+          maxLength: 50
+        description:
+          type: string
+
+    MacroRegionUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        code:
+          type: string
+          maxLength: 50
+        description:
+          type: string
+
+    # Регион
+    Region:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        code:
+          type: string
+        macro_region_id:
+          type: string
+          format: uuid
+        description:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    RegionCreate:
+      type: object
+      required:
+        - name
+        - code
+        - macro_region_id
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        code:
+          type: string
+          maxLength: 50
+        macro_region_id:
+          type: string
+          format: uuid
+        description:
+          type: string
+
+    RegionUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        code:
+          type: string
+          maxLength: 50
+        macro_region_id:
+          type: string
+          format: uuid
+        description:
+          type: string
+
+    # Район
+    District:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        code:
+          type: string
+        region_id:
+          type: string
+          format: uuid
+        description:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    DistrictCreate:
+      type: object
+      required:
+        - name
+        - code
+        - region_id
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        code:
+          type: string
+          maxLength: 50
+        region_id:
+          type: string
+          format: uuid
+        description:
+          type: string
+
+    DistrictUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        code:
+          type: string
+          maxLength: 50
+        region_id:
+          type: string
+          format: uuid
+        description:
+          type: string
+
+    # Населённый пункт
+    Point:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор
+        name:
+          type: string
+          description: Название населённого пункта
+        code:
+          type: string
+          description: Уникальный код
+        district_id:
+          type: string
+          format: uuid
+          description: Ссылка на район
+        type:
+          type: string
+          enum:
+            - city
+            - town
+            - village
+            - settlement
+          description: |
+            Тип населённого пункта:
+            - `city` — город
+            - `town` — посёлок городского типа
+            - `village` — село
+            - `settlement` — населённый пункт
+        description:
+          type: string
+          nullable: true
+          description: Описание
+        created_at:
+          type: string
+          format: date-time
+          description: Дата создания
+        updated_at:
+          type: string
+          format: date-time
+          description: Дата обновления
+
+    PointCreate:
+      type: object
+      required:
+        - name
+        - code
+        - district_id
+        - type
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          description: Название населённого пункта
+          example: "Зеленоград"
+        code:
+          type: string
+          maxLength: 50
+          description: Уникальный код (латиница, верхний регистр)
+          example: "ZELENOGRAD"
+        district_id:
+          type: string
+          format: uuid
+          description: ID района, к которому относится населённый пункт
+        type:
+          type: string
+          enum:
+            - city
+            - town
+            - village
+            - settlement
+          description: Тип населённого пункта
+        description:
+          type: string
+          description: Описание (необязательно)
+
+    PointUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        code:
+          type: string
+          maxLength: 50
+        district_id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum:
+            - city
+            - town
+            - village
+            - settlement
+        description:
+          type: string
+
+    # Общие схемы
+    Pagination:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Общее количество записей
+        page:
+          type: integer
+          description: Текущая страница
+        per_page:
+          type: integer
+          description: Записей на странице
+        total_pages:
+          type: integer
+          description: Всего страниц
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Сообщение об ошибке
+
+  # Ответы
+  responses:
+    NotFound:
+      description: Запись не найдена
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Запись не найдена"
+
+    ValidationError:
+      description: Ошибка валидации
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            required_field:
+              summary: Обязательное поле
+              value:
+                error: "Поле \"name\" обязательно"
+            unique_constraint:
+              summary: Нарушение уникальности
+              value:
+                error: "Населённый пункт с таким кодом уже существует"
+            invalid_type:
+              summary: Недопустимое значение
+              value:
+                error: "Недопустимое значение type. Допустимые: city, town, village, settlement"
